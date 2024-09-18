@@ -1,6 +1,18 @@
 import { Platform } from 'react-native';
 import * as AppleAuthentication from 'expo-apple-authentication';
-// import { supabase } from 'app/utils/supabase';
+
+import 'react-native-url-polyfill/auto'
+import { createClient } from '@supabase/supabase-js'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const supabase = createClient("https://tlaihqorrptgeflxarvm.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsYWlocW9ycnB0Z2VmbHhhcnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIxMDgxMzksImV4cCI6MjAzNzY4NDEzOX0.B5fs0W2dXZPSmKmZ2yoMxVg4n6JBEpdBQh8ZRHOxoBY", {
+  auth: {
+    storage: AsyncStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false,
+  },
+});
 
 export function Auth() {
   if (Platform.OS === 'ios')
@@ -21,17 +33,17 @@ export function Auth() {
             console.log(credential);
             // Sign in via Supabase Auth.
             if (credential.identityToken) {
-              // const {
-              //   error,
-              //   data: { user },
-              // } = await supabase.auth.signInWithIdToken({
-              //   provider: 'apple',
-              //   token: credential.identityToken,
-              // });
-              // console.log(JSON.stringify({ error, user }, null, 2));
-              // if (!error) {
-              //   // User is signed in.
-              // }
+              const {
+                error,
+                data: { user },
+              } = await supabase.auth.signInWithIdToken({
+                provider: 'apple',
+                token: credential.identityToken,
+              });
+              console.log(JSON.stringify({ error, user }, null, 2));
+              if (!error) {
+                // User is signed in.
+              }
             } else {
               throw new Error('No identityToken.');
             }
