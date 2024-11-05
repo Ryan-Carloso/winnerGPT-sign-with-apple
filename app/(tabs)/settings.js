@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useLanguage } from '../../components/globalize/context'; // Ajuste o caminho conforme necessário
-
+//test
 const SettingsScreen = () => {
   const { setLanguage, translate } = useLanguage();
 
