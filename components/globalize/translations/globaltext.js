@@ -1,28 +1,52 @@
 // aboutTranslations.js
 const GlobalText = {
     en: {
-        byAI: "Forecasted by AI",
+        byAI: "Forecasted by artificial intelligence",
+        seestats: "Click to see more Stats, provided by artificial intelligence",
         home: "Home",
         settings: "Settings",
-        about: "About"
+        about: "About",
+        filters: "Filters",
+        teamname: "Enter team name",
+        premierleague: "Premier League",
+        championsleague: "Champions League",
+        ligaportugal: "Portugal League",
     },
     es: {
-        byAI: "Pronosticado por IA",
+        byAI: "Pronosticado por inteligencia artificial",
+        seestats: "Haz clic para ver más estadísticas, proporcionadas por inteligencia artificial",
         home: "Inicio",
         settings: "Configuraciones",
-        about: "Acerca de"
+        about: "Acerca de",
+        filters: "Filtros",
+        teamname: "Ingresa el nombre del equipo",
+        premierleague: "Liga Premier",
+        championsleague: "Liga de Campeones",
+        ligaportugal: "Liga de Portugal",
     },
     pt: {
-        byAI: "Previsto por IA",
+        byAI: "Previsto por inteligência artificial",
+        seestats: "Clique para ver mais estatísticas, fornecidas pela inteligência artificial",
         home: "Início",
         settings: "Configurações",
-        about: "Sobre"
+        about: "Sobre",
+        filters: "Filtros",
+        teamname: "Digite o nome do time",
+        premierleague: "Liga Inglesa",
+        championsleague: "Liga dos Campeões",
+        ligaportugal: "Liga de Portugal",
     },
     fr: {
-        byAI: "Prévu par IA",
+        byAI: "Prévu par intelligence artificielle",
+        seestats: "Cliquez pour voir plus de statistiques, fournies par intelligence artificielle",
         home: "Accueil",
         settings: "Paramètres",
-        about: "À propos"
+        about: "À propos",
+        filters: "Filtres",
+        teamname: "Entrez le nom de l'équipe",
+        premierleague: "Premier League",
+        championsleague: "Ligue des Champions",
+        ligaportugal: "Ligue du Portugal",
     },
 };
 

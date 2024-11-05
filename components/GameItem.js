@@ -1,60 +1,263 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import { styles as globalStyles } from '../styles/GlobalStyles'; // Renomeando para globalStyles
-import { parseISO, isPast } from 'date-fns';
-import { styles } from '../styles/GameItemStyles';
-import LottieAnimation from './LottieAnimation';
-import { useLanguage } from './globalize/context'; // Ajuste o caminho conforme necessário
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Platform,
+} from 'react-native'
+import { useRouter } from 'expo-router'
+import { format } from 'date-fns'
+import { LinearGradient } from 'expo-linear-gradient'
+import { Calendar, Clock, Trophy, ChevronRight } from 'lucide-react-native'
+import { useLanguage } from './globalize/context';
 
-const GameItem = ({ item, numColumns }) => {
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
+
+// Constants
+const COLORS = {
+  primary: '#1E88E5',
+  white: '#FFFFFF',
+  background: '#F8FAFF',
+  text: '#2B2B2B',
+  border: '#E3F2FD',
+  lightBlue: '#F5F9FF',
+}
+
+export default function GameItem({ item, numColumns = 1 }) {
   const { translate } = useLanguage();
-  const router = useRouter();
-  const [textWidth, setTextWidth] = useState(0); // Estado para armazenar a largura do texto
+  const router = useRouter()
+  const [isPressed, setIsPressed] = useState(false)
 
-  const homeTeam = item.home_team_name;
-  const awayTeam = item.away_team_name;
-  const prediction = item.gpt_prediction;
-  const analysis = item.gpt_reason;
-  const date = item.fixture_date.slice(0, 10); // Extrair a data no formato AAAA-MM-DD
-  const time = item.fixture_date.slice(11, 16); // Extrair a hora no formato HH:MM
+  const getItemWidth = () => {
+    const padding = 32
+    const spacing = 16
+    const availableWidth = SCREEN_WIDTH - padding
+    return (availableWidth - spacing * (numColumns - 1)) / numColumns
+  }
 
-  const handlePressTeam = (gameData) => {
+  const handlePressTeam = () => {
+    setIsPressed(true)
     router.push({
-      pathname: `/team/${gameData.home_team_id}`,
-      params: { gameData: JSON.stringify(gameData) }, // Passando os dados do jogo
-    });
-  };
+      pathname: `/team/${item.home_team_id}`,
+      params: { gameData: JSON.stringify(item) },
+    })
+  }
+
+  const date = new Date(item.fixture_date)
+  const formattedDate = format(date, 'MMM dd, yyyy')
+  const formattedTime = format(date, 'HH:mm')
 
   return (
-    <TouchableOpacity onPress={() => handlePressTeam(item)}>
-      <View style={[styles.gameContainer, { flexBasis: `${100 / numColumns}%` }]}>
-        <Text style={styles.titleTeam}>{homeTeam} {'\n'}vs{'\n'} {awayTeam}</Text>
-
-        <View style={styles.dateContainer}>
-          <Text style={styles.date}>{date}</Text>
-          <Text style={styles.time}>{time}</Text>
-        </View>
-
-        <View style={styles.gameColumn}>
-          <Text style={styles.winner}>{translate('byAI')}</Text>
-          <View style={styles.centeredWrapper}>
-            <LottieAnimation winnerteam={prediction} customWidth={textWidth} />
-            <Text
-              style={styles.winnerteam}
-              onLayout={(event) => {
-                const { width } = event.nativeEvent.layout;
-                setTextWidth(width); // Atualiza a largura do texto
-              }}
-            >
-              {prediction}
-            </Text>
+    <View style={[styles.container, { width: getItemWidth() }]}>
+      <LinearGradient
+        colors={[COLORS.white, COLORS.background]}
+        style={styles.card}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <TouchableOpacity
+                  onPress={handlePressTeam}
+>
+        {/* Date & Time Section */}
+        <View style={styles.header}>
+          <View style={styles.dateTimeContainer}>
+            <View style={styles.infoRow}>
+              <Calendar width={14} height={14} color={COLORS.primary} />
+              <Text style={styles.dateText}>{formattedDate}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Clock width={14} height={14} color={COLORS.primary} />
+              <Text style={styles.timeText}>{formattedTime}</Text>
+            </View>
           </View>
-          <Text style={styles.analysis}>Click to see more Stats, provide by ai</Text>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
 
-export default GameItem;
+        {/* Teams Section */}
+        <View style={styles.teamsSection}>
+          <Text style={styles.teamName} numberOfLines={1}>
+            {item.home_team_name}
+          </Text>
+          <View style={styles.vsContainer}>
+            <View style={styles.vsLine} />
+            <Text style={styles.vsText}>VS</Text>
+            <View style={styles.vsLine} />
+          </View>
+          <Text style={styles.teamName} numberOfLines={1}>
+            {item.away_team_name}
+          </Text>
+        </View>
+
+        {/* Prediction Section */}
+        <View style={styles.predictionContainer}>
+          <View style={styles.predictionHeader}>
+            <Trophy width={16} height={16} color={COLORS.primary} />
+            <Text style={styles.predictionLabel}>{translate('byAI')}</Text>
+          </View>
+          <Text style={styles.predictionText}>{item.gpt_prediction}</Text>
+        </View>
+
+        {/* Action Button */}
+        <TouchableOpacity
+          onPress={handlePressTeam}
+          style={[styles.actionButton, isPressed && styles.actionButtonPressed]}
+          activeOpacity={0.9}
+          accessible={true}
+          accessibilityLabel={`See stats for ${item.home_team_name} vs ${item.away_team_name}`}
+          accessibilityRole="button"
+        >
+          <Text style={styles.actionButtonText}>{translate('seestats')}</Text>
+          <ChevronRight width={18} height={18} color={COLORS.white} />
+        </TouchableOpacity>
+        </TouchableOpacity>
+      </LinearGradient>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 8,
+    margin: 'auto'
+  },
+  card: {
+    borderRadius: 20,
+    padding: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.primary,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 12,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  header: {
+    marginBottom: 16,
+  },
+  dateTimeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.white,
+    padding: 12,
+    borderRadius: 12,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  dateText: {
+    fontSize: 14,
+    color: COLORS.primary,
+    fontWeight: '600',
+  },
+  timeText: {
+    fontSize: 14,
+    color: COLORS.primary,
+    fontWeight: '700',
+  },
+  teamsSection: {
+    backgroundColor: COLORS.lightBlue,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  teamName: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: COLORS.text,
+    textAlign: 'center',
+    marginVertical: 8,
+  },
+  vsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 8,
+    gap: 12,
+  },
+  vsLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#E0E0E0',
+    maxWidth: 80,
+  },
+  vsText: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: COLORS.primary,
+    letterSpacing: 1,
+  },
+  predictionContainer: {
+    backgroundColor: COLORS.lightBlue,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  predictionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 8,
+  },
+  predictionLabel: {
+    fontSize: 14,
+    color: COLORS.primary,
+    fontWeight: '600',
+  },
+  predictionText: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.primary,
+    textAlign: 'center',
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    gap: 8,
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.primary,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+  actionButtonPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
+  },
+  actionButtonText: {
+    color: COLORS.white,
+    fontWeight: '700',
+    fontSize: 16,
+  },
+})

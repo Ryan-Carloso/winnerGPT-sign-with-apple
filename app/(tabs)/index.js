@@ -5,7 +5,8 @@ import Header from '../../components/header';
 import GameItem from '../../components/GameItem';
 import { styles } from '../../styles/GlobalStyles';
 import { fetchData } from '../../utils/api';
-import Auth  from '../../components/auth/auth';
+import Auth from '../../components/auth/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -18,6 +19,18 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Add isLoggedIn state
 
   useEffect(() => {
+    // Check login status when the app starts
+    const checkLoginStatus = async () => {
+      try {
+        const loggedInStatus = await AsyncStorage.getItem('isLoggedIn');
+        setIsLoggedIn(loggedInStatus === 'true'); // Set state based on stored value
+      } catch (error) {
+        console.error('Error checking login status:', error);
+      }
+    };
+
+    checkLoginStatus(); // Call the function to check login status
+
     fetchLeagueData(selectedLeague);
     adjustColumns();
 
@@ -82,7 +95,6 @@ export default function App() {
   const filteredData = sortData(data.filter((item) => {
     return selectedTeam ? item.game.toLowerCase().includes(selectedTeam.toLowerCase()) : true;
   }));
-
 
   if (loading) {
     return (

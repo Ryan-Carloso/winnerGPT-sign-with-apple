@@ -16,22 +16,29 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
-import { useLanguage } from '../globalize/context'
-//this page not uses sign-in with apple uses my function by code
-
+import { useLanguage } from '../globalize/context';
 
 const { width, height } = Dimensions.get('window');
 
+// Calculate responsive sizes
+const buttonWidth = width * 0.75;
+const buttonHeight = height < 700 ? 50 : 60; // Adjust height for smaller screens
+
+const CODES = [
+  'A3J7K9X2', 'Z8Y6P3L9', 'W4F5G2H7', 'Q1D3S8T5', 'B2N9V5X1', 
+  'L3M6J8P4', 'U5Y7T4W9', 'X2K5J1B7', 'V9Q3M4L6', 'H7P8D2N3', 
+  'codetest'
+];
+
 export default function Auth({ setIsLoggedIn }) {
   const { translate } = useLanguage();
-
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const inputRef = useRef(null);
 
   const handleLogin = () => {
-    if (code === 'CODIGOTESTE') {
+    if (CODES.includes(code)) {
       setIsLoggedIn(true);
       setError('');
     } else {
@@ -44,14 +51,13 @@ export default function Auth({ setIsLoggedIn }) {
   };
 
   const handleSupport = async () => {
-    const supportUrl = 'https://www.example.com/support';
+    const supportUrl = 'https://wa.me/+351962248268?text=Hello,%20I%20would%20like%20help%20you%20access%20the%20app.%20Could%20you%20please%20tell%20me%20how%20to%20do%20that%3F';
     await Linking.openURL(supportUrl);
   };
 
   const handleKeyboardDismiss = () => {
     Keyboard.dismiss();
   };
-
 
   return (
     <TouchableWithoutFeedback onPress={handleKeyboardDismiss}>
@@ -61,12 +67,12 @@ export default function Auth({ setIsLoggedIn }) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.content}
           >
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../../assets/icon.png')} 
-              style={{ width: 100, height: 100 }}       
-            />
-          </View>
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../../assets/icon.png')}
+                style={{ width: 100, height: 100 }}
+              />
+            </View>
             <Text style={styles.title}>{translate('welcome')}</Text>
             <Text style={styles.subtitle}>{translate('enterCode')}</Text>
             <View style={styles.inputContainer}>
@@ -101,6 +107,7 @@ export default function Auth({ setIsLoggedIn }) {
     </TouchableWithoutFeedback>
   );
 }
+
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
@@ -129,11 +136,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  logoText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#4A5568',
-  },
   title: {
     fontSize: 36,
     fontWeight: 'bold',
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputContainer: {
-    width: width * 0.85,
+    width: buttonWidth,
     marginBottom: 20,
     position: 'relative',
   },
@@ -156,7 +158,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     paddingHorizontal: 20,
-    paddingLeft: 50,
     fontSize: 18,
     color: '#2D3748',
     borderWidth: 1,
@@ -164,12 +165,12 @@ const styles = StyleSheet.create({
   },
   passwordButton: {
     position: 'absolute',
-    left: 15,
+    right: -30,
     top: 20,
   },
   button: {
-    width: width * 0.85,
-    height: 60,
+    width: buttonWidth,
+    height: buttonHeight,
     backgroundColor: '#4299E1',
     borderRadius: 12,
     justifyContent: 'center',
@@ -197,13 +198,13 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   supportButton: {
-    width: width * 0.85,
-    height: 60,
+    width: buttonWidth,
+    height: buttonHeight,
     backgroundColor: '#48BB78',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 10,
     shadowColor: "#48BB78",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,

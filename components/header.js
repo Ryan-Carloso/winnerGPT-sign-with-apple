@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image, useWindowDimensions, TextInput } from 'react-native';
 import { Dimensions } from 'react-native';
+import { useLanguage } from '../components/globalize/context';
+
 
 // Obtendo as dimensões da tela
 const { width: screenWidth } = Dimensions.get('window');
 
-const fontSizeBase = screenWidth < 360 ? 14 : screenWidth < 700 ? 16 : 18;
+
+const fontSizeBase = screenWidth < 360 ? 16 : screenWidth < 700 ? 18 : 20;
 const titleFontSize = screenWidth < 360 ? 20 : screenWidth < 700 ? 24 : 28;
-const winnerFontSize = screenWidth < 360 ? 16 : screenWidth < 700 ? 18 : 20;
+const winnerFontSize = screenWidth < 360 ? 18 : screenWidth < 700 ? 20 : 22;
 const dropdownTop = screenWidth >= 768 ? 50 : 85;
 const dropdownRight = screenWidth >= 768 ? 10 : 40;
 
 
 const Header = ({ selectedLeague, setSelectedLeague, selectedTeam, setSelectedTeam }) => {
+  const { translate } = useLanguage();
   const { width } = useWindowDimensions();
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
@@ -37,27 +41,20 @@ const Header = ({ selectedLeague, setSelectedLeague, selectedTeam, setSelectedTe
         </View>
         
         <TouchableOpacity onPress={toggleDropdownVisibility} style={styles.button}>
-          <Text style={styles.buttonText}>Filters ▼</Text>
+          <Text style={styles.buttonText}>{translate('filters')} ▼</Text>
         </TouchableOpacity>
       </View>
-      <View style={[styles.topBar, width >= 768 && styles.topBarTablet]}>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter team name"
-          value={selectedTeam}
-          onChangeText={setSelectedTeam}
-        />
-      </View>
+
       {isDropdownVisible && (
         <View style={styles.dropdown}>
           <TouchableOpacity onPress={() => selectLeague('premierleague')} style={styles.dropdownItem}>
-            <Text>Premier League</Text>
+            <Text>{translate('premierleague')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => selectLeague('championsleague')} style={styles.dropdownItem}>
-            <Text>Champions League</Text>
+            <Text>{translate('championsleague')}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => selectLeague('ligaportugal')} style={styles.dropdownItem}>
-            <Text>Liga Portugal</Text>
+          <Text>{translate('ligaportugal')}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -95,38 +92,48 @@ const styles = StyleSheet.create({
     height: 40,
   },
   button: {
-    padding: 10,
-    backgroundColor: '#999999',
-    borderRadius: 10,
+    width: screenWidth * 0.65,
+    height: 60,
+    backgroundColor: '#4299E1',
+    borderRadius: 12,
+    justifyContent: 'center',
     alignItems: 'center',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    width: 150,
+    marginBottom: 5,
+    shadowColor: "#4299E1",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    marginTop: 20,
   },
   buttonText: {
-    color: 'white',
+    color: '#FFFFFF',
+    fontWeight: 'bold',
     fontSize: fontSizeBase, // Ajusta dinamicamente o tamanho da fonte do botão
   },
   dropdown: {
     position: 'absolute',
-    top: dropdownTop, // Altera a posição do dropdown com base na largura da tela
-    right: dropdownRight,
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    top: 110,
+    right: 20,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    zIndex: 1000, // Garante que o dropdown apareça acima de outros conteúdos
-    width: 150,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    zIndex: 1000,
+    width: 180,
   },
   dropdownItem: {
-    padding: 10,
-    borderBottomColor: '#999999',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
     borderBottomWidth: 1,
-    fontSize: fontSizeBase,
+    borderBottomColor: '#E2E8F0',
+  },
+  dropdownItemText: {
+    fontSize: 16,
+    color: '#fff',
   },
   topBar: {
     flexDirection: 'column',
