@@ -16,11 +16,11 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
-import { useLanguage } from '../globalize/context'
-//this page not uses sign-in with apple uses my function by code
-
+import { useLanguage } from '../globalize/context';
 
 const { width, height } = Dimensions.get('window');
+
+const CODES = ['A3J7K9X2', 'Z8Y6P3L9', 'W4F5G2H7', 'Q1D3S8T5', 'B2N9V5X1', 'L3M6J8P4', 'U5Y7T4W9', 'X2K5J1B7', 'V9Q3M4L6', 'H7P8D2N3', 'codetest'];
 
 export default function Auth({ setIsLoggedIn }) {
   const { translate } = useLanguage();
@@ -31,7 +31,7 @@ export default function Auth({ setIsLoggedIn }) {
   const inputRef = useRef(null);
 
   const handleLogin = () => {
-    if (code === 'CODIGOTESTE') {
+    if (CODES.includes(code)) {
       setIsLoggedIn(true);
       setError('');
     } else {
@@ -52,7 +52,6 @@ export default function Auth({ setIsLoggedIn }) {
     Keyboard.dismiss();
   };
 
-
   return (
     <TouchableWithoutFeedback onPress={handleKeyboardDismiss}>
       <LinearGradient colors={['#F5F5F5', '#ffff']} style={styles.gradient}>
@@ -61,12 +60,12 @@ export default function Auth({ setIsLoggedIn }) {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.content}
           >
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../../assets/icon.png')} 
-              style={{ width: 100, height: 100 }}       
-            />
-          </View>
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../../assets/icon.png')}
+                style={{ width: 100, height: 100 }}
+              />
+            </View>
             <Text style={styles.title}>{translate('welcome')}</Text>
             <Text style={styles.subtitle}>{translate('enterCode')}</Text>
             <View style={styles.inputContainer}>
@@ -101,6 +100,7 @@ export default function Auth({ setIsLoggedIn }) {
     </TouchableWithoutFeedback>
   );
 }
+
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
@@ -128,11 +128,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-  },
-  logoText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#4A5568',
   },
   title: {
     fontSize: 36,
