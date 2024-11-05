@@ -1,0 +1,223 @@
+import React, { useState, useRef } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions,
+  Linking,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Image,
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome } from '@expo/vector-icons';
+import { useLanguage } from '../globalize/context'
+
+
+const { width, height } = Dimensions.get('window');
+
+export default function Auth({ setIsLoggedIn }) {
+  const { translate } = useLanguage();
+
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const inputRef = useRef(null);
+
+  const handleLogin = () => {
+    if (code === 'CODIGOTESTE') {
+      setIsLoggedIn(true);
+      setError('');
+    } else {
+      setError('Código incorreto. Tente novamente.');
+    }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSupport = async () => {
+    const supportUrl = 'https://www.example.com/support';
+    await Linking.openURL(supportUrl);
+  };
+
+  const handleKeyboardDismiss = () => {
+    Keyboard.dismiss();
+  };
+
+
+  return (
+    <TouchableWithoutFeedback onPress={handleKeyboardDismiss}>
+      <LinearGradient colors={['#F5F5F5', '#ffff']} style={styles.gradient}>
+        <SafeAreaView style={styles.container}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.content}
+          >
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('../../assets/icon.png')} 
+              style={{ width: 100, height: 100 }}       
+            />
+          </View>
+            <Text style={styles.title}>{translate('welcome')}</Text>
+            <Text style={styles.subtitle}>{translate('enterCode')}</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                ref={inputRef}
+                style={styles.input}
+                onChangeText={setCode}
+                value={code}
+                placeholder={translate('placeholderCode')}
+                placeholderTextColor="#A0AEC0"
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity style={styles.passwordButton} onPress={toggleShowPassword}>
+                <FontAwesome name={showPassword ? 'eye-slash' : 'eye'} size={20} color="#A0AEC0" />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <Text style={styles.buttonText}>{translate('loginButton')}</Text>
+            </TouchableOpacity>
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
+          </KeyboardAvoidingView>
+          <View style={styles.supportContainer}>
+            <TouchableOpacity style={styles.supportButton} onPress={handleSupport}>
+              <Text style={styles.supportButtonText}>{translate('support')}</Text>
+            </TouchableOpacity>
+            <Text style={styles.supportText}>
+              {translate('noCode')}
+            </Text>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
+  );
+}
+const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  logoContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#E2E8F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 40,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  logoText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#4A5568',
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: '#2D3748',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#4A5568',
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  inputContainer: {
+    width: width * 0.85,
+    marginBottom: 20,
+    position: 'relative',
+  },
+  input: {
+    height: 60,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingHorizontal: 20,
+    paddingLeft: 50,
+    fontSize: 18,
+    color: '#2D3748',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  passwordButton: {
+    position: 'absolute',
+    left: 15,
+    top: 20,
+  },
+  button: {
+    width: width * 0.85,
+    height: 60,
+    backgroundColor: '#4299E1',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    shadowColor: "#4299E1",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  errorText: {
+    color: '#E53E3E',
+    marginTop: 10,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  supportContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  supportButton: {
+    width: width * 0.85,
+    height: 60,
+    backgroundColor: '#48BB78',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 15,
+    shadowColor: "#48BB78",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
+  supportButtonText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  supportText: {
+    fontSize: 14,
+    color: '#4A5568',
+    textAlign: 'center',
+    paddingHorizontal: 20,
+  },
+});
