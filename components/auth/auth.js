@@ -17,6 +17,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
 import { useLanguage } from '../globalize/context'
+//this page not uses sign-in with apple uses my function by code
 
 
 const { width, height } = Dimensions.get('window');
