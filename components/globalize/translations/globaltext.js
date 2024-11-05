@@ -1,7 +1,8 @@
 // aboutTranslations.js
 const GlobalText = {
     en: {
-        byAI: "Forecasted by AI",
+        byAI: "Forecasted by artificial intelligence",
+        seestats: "Click to see more Stats, provided by artificial intelligence",
         home: "Home",
         settings: "Settings",
         about: "About",
@@ -12,18 +13,20 @@ const GlobalText = {
         ligaportugal: "Portugal League",
     },
     es: {
-        byAI: "Pronosticado por IA",
+        byAI: "Pronosticado por inteligencia artificial",
+        seestats: "Haz clic para ver más estadísticas, proporcionadas por inteligencia artificial",
         home: "Inicio",
         settings: "Configuraciones",
         about: "Acerca de",
         filters: "Filtros",
-        teamname: "Ingrese el nombre del equipo",
+        teamname: "Ingresa el nombre del equipo",
         premierleague: "Liga Premier",
         championsleague: "Liga de Campeones",
         ligaportugal: "Liga de Portugal",
     },
     pt: {
-        byAI: "Previsto por IA",
+        byAI: "Previsto por inteligência artificial",
+        seestats: "Clique para ver mais estatísticas, fornecidas pela inteligência artificial",
         home: "Início",
         settings: "Configurações",
         about: "Sobre",
@@ -34,7 +37,8 @@ const GlobalText = {
         ligaportugal: "Liga de Portugal",
     },
     fr: {
-        byAI: "Prévu par IA",
+        byAI: "Prévu par intelligence artificielle",
+        seestats: "Cliquez pour voir plus de statistiques, fournies par intelligence artificielle",
         home: "Accueil",
         settings: "Paramètres",
         about: "À propos",
