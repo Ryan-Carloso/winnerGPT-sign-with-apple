@@ -4,7 +4,6 @@ import { useRouter } from 'expo-router';
 import { format } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ChevronRight, Calendar, Clock, Trophy } from 'lucide-react-native';
-import LottieAnimation from './LottieAnimation';
 import { useLanguage } from './globalize/context';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -79,7 +78,6 @@ const GameItem = ({ item, numColumns = 1 }) => {
           </View>
           
           <View style={styles.predictionContent}>
-            <LottieAnimation winnerteam={item.gpt_prediction} customWidth={textWidth} />
             <Text
               style={styles.predictionText}
               onLayout={(event) => setTextWidth(event.nativeEvent.layout.width)}
