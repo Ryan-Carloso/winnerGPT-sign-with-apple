@@ -22,15 +22,7 @@ export default function Auth({ setIsLoggedIn }) { // Add setIsLoggedIn prop
   const [error, setError] = useState(null); // Initialize error state to null
 
   const handleAppleSignIn = async () => {
-    try {
-      const credential = await AppleAuthentication.signInAsync({
-        requestedScopes: [
-          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-          AppleAuthentication.AppleAuthenticationScope.EMAIL,
-        ],
-      });
-      console.log(credential);
-      
+    try {      
       if (credential.identityToken) {
         const {
           error,
