@@ -27,7 +27,7 @@ const buttonHeight = height < 700 ? 50 : 60; // Adjust height for smaller screen
 const CODES = [
   'A3J7K9X2', 'Z8Y6P3L9', 'W4F5G2H7', 'Q1D3S8T5', 'B2N9V5X1', 
   'L3M6J8P4', 'U5Y7T4W9', 'X2K5J1B7', 'V9Q3M4L6', 'H7P8D2N3', 
-  'codetest'
+  'codetest', 
 ];
 
 export default function Auth({ setIsLoggedIn }) {
@@ -38,11 +38,18 @@ export default function Auth({ setIsLoggedIn }) {
   const inputRef = useRef(null);
 
   const handleLogin = () => {
-    if (CODES.includes(code)) {
-      setIsLoggedIn(true);
-      setError('');
-    } else {
-      setError('Código incorreto. Tente novamente.');
+    try {
+      if (CODES.includes(code)) {
+        console.log("Login bem-sucedido");
+        setIsLoggedIn(true);
+        setError('');
+      } else {
+        console.log("Código incorreto");
+        setError('Código incorreto. Tente novamente.');
+      }
+    } catch (err) {
+      console.error("Erro no login:", err);
+      setError('Ocorreu um erro. Tente novamente.');
     }
   };
 
