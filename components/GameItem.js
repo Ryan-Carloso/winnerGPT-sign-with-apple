@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { format } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Calendar, Clock, Trophy, ChevronRight } from 'lucide-react-native';
 import { useLanguage } from './globalize/context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -17,10 +18,11 @@ const COLORS = {
   lightBlue: '#F5F9FF',
 };
 
-export default function GameItem({ item, numColumns = 1, clickCount, setClickCount }) {
+export default function GameItem({ item, numColumns = 1 }) {
   const { translate } = useLanguage();
   const router = useRouter();
   const [isPressed, setIsPressed] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
 
   const getItemWidth = () => {
     const padding = 32;
@@ -32,11 +34,11 @@ export default function GameItem({ item, numColumns = 1, clickCount, setClickCou
   const handlePressTeam = () => {
     if (clickCount > 1) {
       console.log('Você já clicou!');
-      return;  // Não faz mais nada se o número de cliques for 1 ou mais
+      return;
     }
 
-    setClickCount(prevCount => prevCount + 1);  // Incrementa o contador
-    console.log('Número de cliques:', clickCount + 1);  // Exibe o número atualizado de cliques
+    setClickCount(prevCount => prevCount + 1);
+    console.log('Número de cliques:', clickCount + 1);
 
     setIsPressed(true);
     router.push({
@@ -44,6 +46,52 @@ export default function GameItem({ item, numColumns = 1, clickCount, setClickCou
       params: { gameData: JSON.stringify(item) },
     });
   };
+
+  useEffect(() => {
+    // Função para obter o valor armazenado do clickCount
+    const loadClickCount = async () => {
+      try {
+        const storedCount = await AsyncStorage.getItem('clickCount');
+        if (storedCount !== null) {
+          setClickCount(parseInt(storedCount));
+        }
+      } catch (e) {
+        console.error('Erro ao carregar clickCount', e);
+      }
+    };
+
+    loadClickCount();
+  }, []);
+
+  useEffect(() => {
+    // Função para salvar o clickCount sempre que ele mudar
+    const saveClickCount = async () => {
+      try {
+        await AsyncStorage.setItem('clickCount', clickCount.toString());
+      } catch (e) {
+        console.error('Erro ao salvar clickCount', e);
+      }
+    };
+
+    saveClickCount();
+  }, [clickCount]);
+
+  useEffect(() => {
+    // Resetar o clickCount diariamente
+    const resetClickCountDaily = () => {
+      const currentDate = new Date().toDateString();
+      AsyncStorage.getItem('lastResetDate').then((storedDate) => {
+        if (storedDate !== currentDate) {
+          // Se a data armazenada for diferente da data atual, resetar o clickCount
+          setClickCount(0);
+          AsyncStorage.setItem('clickCount', '0');
+          AsyncStorage.setItem('lastResetDate', currentDate); // Armazenar a data do último reset
+        }
+      });
+    };
+
+    resetClickCountDaily();
+  }, [clickCount]);
 
   const date = new Date(item.fixture_date);
   const formattedDate = format(date, 'MMM dd, yyyy');
