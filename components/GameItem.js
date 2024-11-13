@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { format } from 'date-fns';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -32,14 +32,14 @@ export default function GameItem({ item, numColumns = 1 }) {
   };
 
   const handlePressTeam = () => {
-    if (clickCount > 1) {
-      console.log('Você já clicou!');
+    if (clickCount > 3) {
+      // Se o número de cliques for maior que 1, redireciona para a página 'subs.js' com um alerta
+      Alert.alert('Você já clicou!', 'Você não pode clicar mais de uma vez por dia.');
+      router.push('/subs');
       return;
     }
 
     setClickCount(prevCount => prevCount + 1);
-    console.log('Número de cliques:', clickCount + 1);
-
     setIsPressed(true);
     router.push({
       pathname: `/team/${item.home_team_id}`,
@@ -48,12 +48,16 @@ export default function GameItem({ item, numColumns = 1 }) {
   };
 
   useEffect(() => {
-    // Função para obter o valor armazenado do clickCount
     const loadClickCount = async () => {
       try {
         const storedCount = await AsyncStorage.getItem('clickCount');
-        if (storedCount !== null) {
+        const lastClickDate = await AsyncStorage.getItem('lastClickDate');
+        const currentDate = new Date().toDateString();
+
+        if (storedCount !== null && lastClickDate === currentDate) {
           setClickCount(parseInt(storedCount));
+        } else {
+          setClickCount(0);
         }
       } catch (e) {
         console.error('Erro ao carregar clickCount', e);
@@ -64,33 +68,17 @@ export default function GameItem({ item, numColumns = 1 }) {
   }, []);
 
   useEffect(() => {
-    // Função para salvar o clickCount sempre que ele mudar
     const saveClickCount = async () => {
       try {
+        const currentDate = new Date().toDateString();
         await AsyncStorage.setItem('clickCount', clickCount.toString());
+        await AsyncStorage.setItem('lastClickDate', currentDate);
       } catch (e) {
         console.error('Erro ao salvar clickCount', e);
       }
     };
 
     saveClickCount();
-  }, [clickCount]);
-
-  useEffect(() => {
-    // Resetar o clickCount diariamente
-    const resetClickCountDaily = () => {
-      const currentDate = new Date().toDateString();
-      AsyncStorage.getItem('lastResetDate').then((storedDate) => {
-        if (storedDate !== currentDate) {
-          // Se a data armazenada for diferente da data atual, resetar o clickCount
-          setClickCount(0);
-          AsyncStorage.setItem('clickCount', '0');
-          AsyncStorage.setItem('lastResetDate', currentDate); // Armazenar a data do último reset
-        }
-      });
-    };
-
-    resetClickCountDaily();
   }, [clickCount]);
 
   const date = new Date(item.fixture_date);
@@ -147,7 +135,6 @@ export default function GameItem({ item, numColumns = 1 }) {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
