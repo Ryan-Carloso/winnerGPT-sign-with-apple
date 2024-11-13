@@ -60,7 +60,17 @@ export default function GameItem({ item, numColumns = 1 }) {
       >
         <TouchableOpacity
                   onPress={handlePressTeam}
+                  
 >
+          {/* Prediction Section 
+          <View style={styles.predictionContainer}>
+          <View style={styles.predictionHeader}>
+            <Trophy width={16} height={16} color={COLORS.primary} />
+            <Text style={styles.predictionLabel}>{translate('byAI')}</Text>
+          </View>
+        </View>
+        */}
+
         {/* Date & Time Section */}
         <View style={styles.header}>
           <View style={styles.dateTimeContainer}>
@@ -90,14 +100,7 @@ export default function GameItem({ item, numColumns = 1 }) {
           </Text>
         </View>
 
-        {/* Prediction Section */}
-        <View style={styles.predictionContainer}>
-          <View style={styles.predictionHeader}>
-            <Trophy width={16} height={16} color={COLORS.primary} />
-            <Text style={styles.predictionLabel}>{translate('byAI')}</Text>
-          </View>
-          <Text style={styles.predictionText}>{item.gpt_prediction}</Text>
-        </View>
+
 
         {/* Action Button */}
         <TouchableOpacity
@@ -108,6 +111,8 @@ export default function GameItem({ item, numColumns = 1 }) {
           accessibilityLabel={`See stats for ${item.home_team_name} vs ${item.away_team_name}`}
           accessibilityRole="button"
         >
+          <Trophy width={16} height={16} color={COLORS.white} />
+
           <Text style={styles.actionButtonText}>{translate('seestats')}</Text>
           <ChevronRight width={18} height={18} color={COLORS.white} />
         </TouchableOpacity>
@@ -208,7 +213,7 @@ const styles = StyleSheet.create({
   predictionContainer: {
     backgroundColor: COLORS.lightBlue,
     borderRadius: 16,
-    padding: 16,
+    padding: 10,
     marginBottom: 16,
     borderWidth: 1,
     borderColor: COLORS.border,
@@ -236,7 +241,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.primary,
     paddingVertical: 14,
-    paddingHorizontal: 24,
+    paddingHorizontal: 29,
     borderRadius: 12,
     gap: 8,
     ...Platform.select({
@@ -258,6 +263,6 @@ const styles = StyleSheet.create({
   actionButtonText: {
     color: COLORS.white,
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 15,
   },
 })

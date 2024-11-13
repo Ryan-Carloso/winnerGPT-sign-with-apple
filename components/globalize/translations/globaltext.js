@@ -2,7 +2,7 @@
 const GlobalText = {
     en: {
         byAI: "Forecasted by artificial intelligence",
-        seestats: "Click to see more Stats, provided by artificial intelligence",
+        seestats: "Click to see the predicted winner by artificial intelligence and more game statistics.",
         home: "Home",
         settings: "Settings",
         about: "About",
@@ -14,7 +14,7 @@ const GlobalText = {
     },
     es: {
         byAI: "Pronosticado por inteligencia artificial",
-        seestats: "Haz clic para ver más estadísticas, proporcionadas por inteligencia artificial",
+        seestats: "Haz clic para ver el ganador previsto por inteligencia artificial y más estadísticas sobre los juegos.",
         home: "Inicio",
         settings: "Configuraciones",
         about: "Acerca de",
@@ -26,7 +26,7 @@ const GlobalText = {
     },
     pt: {
         byAI: "Previsto por inteligência artificial",
-        seestats: "Clique para ver mais estatísticas, fornecidas pela inteligência artificial",
+        seestats: "Clique para ver o vencedor previsto pela inteligência artificial e mais estatísticas sobre os jogos.",
         home: "Início",
         settings: "Configurações",
         about: "Sobre",
@@ -38,7 +38,7 @@ const GlobalText = {
     },
     fr: {
         byAI: "Prévu par intelligence artificielle",
-        seestats: "Cliquez pour voir plus de statistiques, fournies par intelligence artificielle",
+        seestats: "Cliquez pour voir le gagnant prédit par l’intelligence artificielle et plus de statistiques sur les jeux.",
         home: "Accueil",
         settings: "Paramètres",
         about: "À propos",
