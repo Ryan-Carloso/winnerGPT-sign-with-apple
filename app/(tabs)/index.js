@@ -17,6 +17,8 @@ export default function App() {
   const [numColumns, setNumColumns] = useState(1);
   const [selectedLeague, setSelectedLeague] = useState('all'); // Default to "all"
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Add isLoggedIn state
+  const [clickCount, setClickCount] = useState(0);  // Estado global do contador
+
 
   useEffect(() => {
     // Check login status when the app starts
@@ -137,7 +139,10 @@ export default function App() {
         </View>
         <ScrollView contentContainerStyle={styles.grid}>
           {filteredData.map((item) => (
-            <GameItem key={item.id} item={item} numColumns={numColumns} />
+            <GameItem key={item.id} item={item} numColumns={numColumns} 
+            clickCount={clickCount}
+            setClickCount={setClickCount}
+             />
           ))}
         </ScrollView>
       </SafeAreaView>

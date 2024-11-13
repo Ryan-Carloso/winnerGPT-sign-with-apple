@@ -1,22 +1,13 @@
-import React, { useState } from 'react'
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  Platform,
-} from 'react-native'
-import { useRouter } from 'expo-router'
-import { format } from 'date-fns'
-import { LinearGradient } from 'expo-linear-gradient'
-import { Calendar, Clock, Trophy, ChevronRight } from 'lucide-react-native'
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-native';
+import { useRouter } from 'expo-router';
+import { format } from 'date-fns';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Calendar, Clock, Trophy, ChevronRight } from 'lucide-react-native';
 import { useLanguage } from './globalize/context';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window')
-
-// Constants
 const COLORS = {
   primary: '#1E88E5',
   white: '#FFFFFF',
@@ -24,31 +15,39 @@ const COLORS = {
   text: '#2B2B2B',
   border: '#E3F2FD',
   lightBlue: '#F5F9FF',
-}
+};
 
-export default function GameItem({ item, numColumns = 1 }) {
+export default function GameItem({ item, numColumns = 1, clickCount, setClickCount }) {
   const { translate } = useLanguage();
-  const router = useRouter()
-  const [isPressed, setIsPressed] = useState(false)
+  const router = useRouter();
+  const [isPressed, setIsPressed] = useState(false);
 
   const getItemWidth = () => {
-    const padding = 32
-    const spacing = 16
-    const availableWidth = SCREEN_WIDTH - padding
-    return (availableWidth - spacing * (numColumns - 1)) / numColumns
-  }
+    const padding = 32;
+    const spacing = 16;
+    const availableWidth = SCREEN_WIDTH - padding;
+    return (availableWidth - spacing * (numColumns - 1)) / numColumns;
+  };
 
   const handlePressTeam = () => {
-    setIsPressed(true)
+    if (clickCount > 1) {
+      console.log('Você já clicou!');
+      return;  // Não faz mais nada se o número de cliques for 1 ou mais
+    }
+
+    setClickCount(prevCount => prevCount + 1);  // Incrementa o contador
+    console.log('Número de cliques:', clickCount + 1);  // Exibe o número atualizado de cliques
+
+    setIsPressed(true);
     router.push({
       pathname: `/team/${item.home_team_id}`,
       params: { gameData: JSON.stringify(item) },
-    })
-  }
+    });
+  };
 
-  const date = new Date(item.fixture_date)
-  const formattedDate = format(date, 'MMM dd, yyyy')
-  const formattedTime = format(date, 'HH:mm')
+  const date = new Date(item.fixture_date);
+  const formattedDate = format(date, 'MMM dd, yyyy');
+  const formattedTime = format(date, 'HH:mm');
 
   return (
     <View style={[styles.container, { width: getItemWidth() }]}>
@@ -58,69 +57,49 @@ export default function GameItem({ item, numColumns = 1 }) {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <TouchableOpacity
-                  onPress={handlePressTeam}
-                  
->
-          {/* Prediction Section 
-          <View style={styles.predictionContainer}>
-          <View style={styles.predictionHeader}>
-            <Trophy width={16} height={16} color={COLORS.primary} />
-            <Text style={styles.predictionLabel}>{translate('byAI')}</Text>
-          </View>
-        </View>
-        */}
-
-        {/* Date & Time Section */}
-        <View style={styles.header}>
-          <View style={styles.dateTimeContainer}>
-            <View style={styles.infoRow}>
-              <Calendar width={14} height={14} color={COLORS.primary} />
-              <Text style={styles.dateText}>{formattedDate}</Text>
-            </View>
-            <View style={styles.infoRow}>
-              <Clock width={14} height={14} color={COLORS.primary} />
-              <Text style={styles.timeText}>{formattedTime}</Text>
+        <TouchableOpacity onPress={handlePressTeam}>
+          <View style={styles.header}>
+            <View style={styles.dateTimeContainer}>
+              <View style={styles.infoRow}>
+                <Calendar width={14} height={14} color={COLORS.primary} />
+                <Text style={styles.dateText}>{formattedDate}</Text>
+              </View>
+              <View style={styles.infoRow}>
+                <Clock width={14} height={14} color={COLORS.primary} />
+                <Text style={styles.timeText}>{formattedTime}</Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        {/* Teams Section */}
-        <View style={styles.teamsSection}>
-          <Text style={styles.teamName} numberOfLines={1}>
-            {item.home_team_name}
-          </Text>
-          <View style={styles.vsContainer}>
-            <View style={styles.vsLine} />
-            <Text style={styles.vsText}>VS</Text>
-            <View style={styles.vsLine} />
+          <View style={styles.teamsSection}>
+            <Text style={styles.teamName} numberOfLines={1}>
+              {item.home_team_name}
+            </Text>
+            <View style={styles.vsContainer}>
+              <View style={styles.vsLine} />
+              <Text style={styles.vsText}>VS</Text>
+              <View style={styles.vsLine} />
+            </View>
+            <Text style={styles.teamName} numberOfLines={1}>
+              {item.away_team_name}
+            </Text>
           </View>
-          <Text style={styles.teamName} numberOfLines={1}>
-            {item.away_team_name}
-          </Text>
-        </View>
 
-
-
-        {/* Action Button */}
-        <TouchableOpacity
-          onPress={handlePressTeam}
-          style={[styles.actionButton, isPressed && styles.actionButtonPressed]}
-          activeOpacity={0.9}
-          accessible={true}
-          accessibilityLabel={`See stats for ${item.home_team_name} vs ${item.away_team_name}`}
-          accessibilityRole="button"
-        >
-          <Trophy width={16} height={16} color={COLORS.white} />
-
-          <Text style={styles.actionButtonText}>{translate('seestats')}</Text>
-          <ChevronRight width={18} height={18} color={COLORS.white} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handlePressTeam}
+            style={[styles.actionButton, isPressed && styles.actionButtonPressed]}
+            activeOpacity={0.9}
+          >
+            <Trophy width={16} height={16} color={COLORS.white} />
+            <Text style={styles.actionButtonText}>{translate('seestats')}</Text>
+            <ChevronRight width={18} height={18} color={COLORS.white} />
+          </TouchableOpacity>
         </TouchableOpacity>
       </LinearGradient>
     </View>
-  )
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {
