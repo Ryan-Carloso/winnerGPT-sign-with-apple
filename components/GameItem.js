@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Platform, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { format } from 'date-fns';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Calendar, Clock, Trophy, ChevronRight } from 'lucide-react-native';
 import { useLanguage } from './globalize/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { purchaseItem, getPurchaseHistory } from 'react-native-iap'; // Import from react-native-iap
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -23,28 +24,73 @@ export default function GameItem({ item, numColumns = 1 }) {
   const router = useRouter();
   const [isPressed, setIsPressed] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+  const [hasSubscription, setHasSubscription] = useState(false); // Add state for subscription status
 
   const getItemWidth = () => {
     const padding = 32;
     const spacing = 16;
     const availableWidth = SCREEN_WIDTH - padding;
     return (availableWidth - spacing * (numColumns - 1)) / numColumns;
+    
   };
 
-  const handlePressTeam = () => {
-    if (clickCount > 3) {
-      // Se o número de cliques for maior que 1, redireciona para a página 'subs.js' com um alerta
-      Alert.alert('Você já clicou!', 'Você não pode clicar mais de uma vez por dia.');
-      router.push('/subs');
-      return;
+  const tryit = async () => {
+    try {
+      console.log('iniciate');
+  
+      // Check if user has a subscription
+      const purchaseHistory = await getPurchaseHistory();
+      const hasActiveSubscription = purchaseHistory.some(
+        (purchase) => purchase.productId === 'rc499mo' || purchase.productId === 'rc1999yearly'
+      );
+  
+      // Log if the user has a subscription or not
+      if (hasActiveSubscription) {
+        console.log('User has an active subscription');
+      } else {
+        console.log('User does not have an active subscription');
+      }
+  
+      setHasSubscription(hasActiveSubscription);
+    } catch (error) {
+      console.error('Error fetching purchase history:', error);
     }
-
-    setClickCount(prevCount => prevCount + 1);
-    setIsPressed(true);
-    router.push({
-      pathname: `/team/${item.home_team_id}`,
-      params: { gameData: JSON.stringify(item) },
-    });
+  };
+  
+  const handlePressTeam = async () => {
+    if (hasSubscription) {
+      // User has a subscription, proceed with the click logic without limiting clicks
+      console.log('User has an active subscription!'); // Log if the user has a subscription
+  
+      // Set the click count and mark the button as pressed
+      setClickCount(prevCount => prevCount + 1);
+      setIsPressed(true);
+  
+      // Navigate to the team page
+      router.push({
+        pathname: `/team/${item.home_team_id}`,
+        params: { gameData: JSON.stringify(item) },
+      });
+    } else {
+      // User doesn't have a subscription, check click count limit
+      if (clickCount >= 3) {
+        // If the click count is greater than or equal to 3, show an alert and redirect
+        Alert.alert('Você já clicou!', 'Você não pode clicar mais de três vezes por dia.');
+        router.push('/subs');
+        return;
+      }
+  
+      // Proceed with the click logic for users without subscription
+      console.log('User does not have an active subscription.'); // Log if the user doesn't have a subscription
+      setClickCount(prevCount => prevCount + 1);
+      setIsPressed(true);
+  
+      // Navigate to the team page
+      router.push({
+        pathname: `/team/${item.home_team_id}`,
+        params: { gameData: JSON.stringify(item) },
+      });
+    }
   };
 
   useEffect(() => {
@@ -87,7 +133,7 @@ export default function GameItem({ item, numColumns = 1 }) {
 
   return (
     <View style={[styles.container, { width: getItemWidth() }]}>
-      <LinearGradient
+      <View
         colors={[COLORS.white, COLORS.background]}
         style={styles.card}
         start={{ x: 0, y: 0 }}
@@ -131,7 +177,7 @@ export default function GameItem({ item, numColumns = 1 }) {
             <ChevronRight width={18} height={18} color={COLORS.white} />
           </TouchableOpacity>
         </TouchableOpacity>
-      </LinearGradient>
+      </View>
     </View>
   );
 }
@@ -144,6 +190,8 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     padding: 16,
+    color: Colors.background,
+    backgroundColor: Colors.white,
     ...Platform.select({
       ios: {
         shadowColor: COLORS.primary,
