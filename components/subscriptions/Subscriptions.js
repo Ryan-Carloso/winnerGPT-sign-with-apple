@@ -89,12 +89,10 @@ export const Subscriptions = ({ navigation }) => {
 
   const fetchSubscriptions = async () => {
     if (!connectionEstablished) {
-      console.log("Connection not established yet, skipping subscription fetch");
       return;
     }
 
     try {
-      console.log("Fetching subscription products...");
       setLoading(true);
 
       const products = await getProducts({ skus: subscriptionSkus });
@@ -131,7 +129,6 @@ export const Subscriptions = ({ navigation }) => {
 
   useEffect(() => {
     if (connectionEstablished && connected) {
-      console.log("Connection established, fetching initial data...");
       fetchSubscriptions();
     }
   }, [connectionEstablished, connected]);
