@@ -18,7 +18,6 @@ import {
   getProducts,
   endConnection,
 } from "react-native-iap";
-import { LinearGradient } from 'expo-linear-gradient';
 
 const COLORS = {
   primary: '#1E88E5',
@@ -37,8 +36,8 @@ const subscriptionSkus = Platform.select({
   android: ["androidTestSku"],
 });
 
-export const Subscriptions = ({ navigation, onSubscriptionChange }) => {
-    const {
+export const Subscriptions = ({ navigation }) => {
+  const {
     connected,
     subscriptions,
     getSubscriptions,
@@ -54,30 +53,19 @@ export const Subscriptions = ({ navigation, onSubscriptionChange }) => {
   const [subscribedProducts, setSubscribedProducts] = useState([]);
 
   useEffect(() => {
-    if (subscribedProducts.length > 0) {
-        console.log("User is a pro, with active subscription:", subscribedProducts);
-        onSubscriptionChange(subscribedProducts); // Call the prop function
-
-      } else {
-        console.log("User is not a pro.");
-        onSubscriptionChange([]); // Call the prop function
-    }
-
     let isMounted = true;
 
     const setupIAP = async () => {
       try {
-        console.log("Starting IAP setup...");
 
         await endConnection();
-        console.log("Ended previous IAP connection");
 
         const result = await initConnection();
         console.log("IAP Connection initialized:", result);
 
         if (isMounted) {
           setConnectionEstablished(true);
-          console.log("IAP setup complete");
+
         }
       } catch (error) {
         console.error("IAP setup failed:", error);
@@ -89,9 +77,7 @@ export const Subscriptions = ({ navigation, onSubscriptionChange }) => {
           );
         }
       }
-    }
-}, [subscribedProducts]);
-;
+    };
 
     setupIAP();
 
