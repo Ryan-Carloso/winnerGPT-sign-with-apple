@@ -58,7 +58,7 @@ export default function GameItem({ item, numColumns = 1 }) {
   };
   
   const handlePressTeam = async () => {
-    if (hasSubscription) {
+    if (!hasSubscription) {
       // User has a subscription, proceed with the click logic without limiting clicks
       console.log('User has an active subscription!'); // Log if the user has a subscription
   

@@ -179,12 +179,25 @@ export const Subscriptions = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-
   const renderSubscriptions = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <Text style={styles.header}>Choose Your Perfect Plan</Text>
       <Text style={styles.subheader}>Unlock premium features and exclusive bonuses</Text>
-      {availableSubscriptions && availableSubscriptions.length > 0 ? 
+
+      <View style={styles.cardWrapper}>
+      <View style={styles.topSection}>
+        <Text style={styles.titleText}>Free Users</Text>
+      </View>
+      <View style={styles.infoArea}>
+        <Text style={styles.descriptionText}>Free users can only access basic features:</Text>
+        <View style={styles.featureList}>
+          <Text style={styles.featureItem}>• Limited access to leagues</Text>
+          <Text style={styles.featureItem}>• Standard customer support</Text>
+        </View>
+      </View>
+    </View>
+      
+      {availableSubscriptions && availableSubscriptions.length > 0 ? (
         availableSubscriptions.map((subscription, index) => (
           <TouchableOpacity
             key={index}
@@ -202,7 +215,7 @@ export const Subscriptions = ({ navigation }) => {
               <Text style={styles.benefitItem}>✓ Unlimited access to all features</Text>
               <Text style={styles.benefitItem}>✓ Priority customer support</Text>
               <Text style={styles.benefitItem}>✓ All the Leagues available</Text>
-
+  
               {subscription.productId.includes('yearly') && (
                 <>
                   <Text style={styles.benefitItem}>✓ Save up to 17% compared to monthly</Text>
@@ -228,9 +241,11 @@ export const Subscriptions = ({ navigation }) => {
             </TouchableOpacity>
           </TouchableOpacity>
         ))
-      : 
-      <Text style={styles.noSubscriptionsText}>No subscriptions available</Text>
-    }
+      ) : (
+        <Text style={styles.noSubscriptionsText}>No subscriptions available</Text>
+      )}
+  
+      
     </ScrollView>
   );
 
@@ -347,6 +362,45 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.secondaryText,
     marginTop: 20,
+  },
+
+  cardWrapper: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    margin: 4,
+  },
+  topSection: {
+    backgroundColor: COLORS.primary,
+    padding: 16,
+  },
+  titleText: {
+    color: COLORS.white,
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  infoArea: {
+    padding: 16,
+    backgroundColor: COLORS.background,
+  },
+  descriptionText: {
+    color: COLORS.text,
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 12,
+  },
+  featureList: {
+    marginTop: 8,
+  },
+  featureItem: {
+    color: COLORS.secondaryText,
+    fontSize: 14,
+    marginBottom: 8,
   },
 });
 
