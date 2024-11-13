@@ -18,6 +18,7 @@ import {
   getProducts,
   endConnection,
 } from "react-native-iap";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 
@@ -157,8 +158,8 @@ export const Subscriptions = ({ navigation }) => {
 
   const renderLoadingState = () => (
     <View style={styles.centerContainer}>
-      <ActivityIndicator size="large" color="#0071bc" />
-      <Text style={styles.loadingText}>Loading subscriptions...</Text>
+      <ActivityIndicator size="large" color="#6200ee" />
+      <Text style={styles.loadingText}>Loading amazing offers...</Text>
     </View>
   );
 
@@ -179,12 +180,35 @@ export const Subscriptions = ({ navigation }) => {
 
   const renderSubscriptions = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <Text style={styles.header}>Choose Your Perfect Plan</Text>
+      <Text style={styles.subheader}>Unlock premium features and exclusive bonuses</Text>
       {availableSubscriptions && availableSubscriptions.length > 0 ? 
         availableSubscriptions.map((subscription, index) => (
-          <View key={index} style={styles.subscriptionCard}>
-            <Text style={styles.subscriptionTitle}>{subscription.title}</Text>
-            <Text style={styles.subscriptionPrice}>{subscription.localizedPrice}</Text>
-            <Text style={styles.subscriptionDescription}>{subscription.description}</Text>
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleSubscription(subscription.productId)}
+            style={[
+              styles.subscriptionCard,
+              subscribedProducts.includes(subscription.productId) && styles.subscribedCard
+            ]}
+          >
+            <LinearGradient
+              colors={['#6200ee', '#3700b3']}
+              style={styles.gradientHeader}
+            >
+              <Text style={styles.subscriptionTitle}>{subscription.title}</Text>
+              <Text style={styles.subscriptionPrice}>{subscription.localizedPrice}</Text>
+            </LinearGradient>
+            <View style={styles.benefitsContainer}>
+              <Text style={styles.benefitItem}>✓ Unlimited access to all features</Text>
+              <Text style={styles.benefitItem}>✓ Priority customer support</Text>
+              {subscription.productId.includes('yearly') && (
+                <>
+                  <Text style={styles.benefitItem}>✓ Save 17% compared to monthly</Text>
+                  <Text style={styles.benefitItem}>✓ Yearly bonus: 3 free consultations</Text>
+                </>
+              )}
+            </View>
             <TouchableOpacity
               style={[
                 styles.subscribeButton,
@@ -198,10 +222,10 @@ export const Subscriptions = ({ navigation }) => {
                   ? "Subscribed"
                   : loading
                   ? "Processing..."
-                  : "Subscribe"}
+                  : "Subscribe Now"}
               </Text>
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         ))
       : 
       <Text style={styles.noSubscriptionsText}>No subscriptions available</Text>
@@ -232,6 +256,19 @@ const styles = StyleSheet.create({
   scrollContainer: {
     padding: 16,
   },
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  subheader: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
   loadingText: {
     marginTop: 10,
     fontSize: 16,
@@ -244,7 +281,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   retryButton: {
-    backgroundColor: '#0071bc',
+    backgroundColor: '#6200ee',
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 25,
@@ -257,38 +294,46 @@ const styles = StyleSheet.create({
   subscriptionCard: {
     backgroundColor: 'white',
     borderRadius: 15,
-    padding: 20,
     marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
+    overflow: 'hidden',
+  },
+  subscribedCard: {
+    borderColor: '#4CAF50',
+    borderWidth: 2,
+  },
+  gradientHeader: {
+    padding: 20,
   },
   subscriptionTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
     marginBottom: 8,
   },
   subscriptionPrice: {
     fontSize: 18,
-    color: '#0071bc',
-    marginBottom: 12,
+    color: 'white',
   },
-  subscriptionDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
+  benefitsContainer: {
+    padding: 20,
+  },
+  benefitItem: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 10,
   },
   subscribeButton: {
-    backgroundColor: '#0071bc',
+    backgroundColor: '#6200ee',
     paddingVertical: 12,
-    borderRadius: 25,
     alignItems: 'center',
   },
   subscribedButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#4CAF50',
   },
   buttonText: {
     color: 'white',
