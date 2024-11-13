@@ -32,13 +32,15 @@ export default function GameItem({ item, numColumns = 1 }) {
   };
 
   const handlePressTeam = () => {
-    if (clickCount > 3) {
-      // Se o número de cliques for maior que 1, redireciona para a página 'subs.js' com um alerta
+    // Verifica se o usuário é "pro"
+    const isPro = subscribedProducts.length > 0;
+  
+    if (!isPro && clickCount > 3) {
       Alert.alert('Você já clicou!', 'Você não pode clicar mais de uma vez por dia.');
       router.push('/subs');
       return;
     }
-
+  
     setClickCount(prevCount => prevCount + 1);
     setIsPressed(true);
     router.push({

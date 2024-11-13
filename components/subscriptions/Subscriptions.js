@@ -20,6 +20,14 @@ import {
 } from "react-native-iap";
 import { LinearGradient } from 'expo-linear-gradient';
 
+const COLORS = {
+  primary: '#1E88E5',
+  white: '#FFFFFF',
+  background: '#F8FAFF',
+  text: '#333333',
+  secondaryText: '#666666',
+}
+
 const { width } = Dimensions.get('window');
 
 const ITUNES_SHARED_SECRET = "c3b2572aaae84d9c8ca0b06b782db96e";
@@ -29,8 +37,8 @@ const subscriptionSkus = Platform.select({
   android: ["androidTestSku"],
 });
 
-export const Subscriptions = ({ navigation }) => {
-  const {
+export const Subscriptions = ({ navigation, onSubscriptionChange }) => {
+    const {
     connected,
     subscriptions,
     getSubscriptions,
@@ -46,6 +54,15 @@ export const Subscriptions = ({ navigation }) => {
   const [subscribedProducts, setSubscribedProducts] = useState([]);
 
   useEffect(() => {
+    if (subscribedProducts.length > 0) {
+        console.log("User is a pro, with active subscription:", subscribedProducts);
+        onSubscriptionChange(subscribedProducts); // Call the prop function
+
+      } else {
+        console.log("User is not a pro.");
+        onSubscriptionChange([]); // Call the prop function
+    }
+
     let isMounted = true;
 
     const setupIAP = async () => {
@@ -72,7 +89,9 @@ export const Subscriptions = ({ navigation }) => {
           );
         }
       }
-    };
+    }
+}, [subscribedProducts]);
+;
 
     setupIAP();
 
@@ -158,7 +177,7 @@ export const Subscriptions = ({ navigation }) => {
 
   const renderLoadingState = () => (
     <View style={styles.centerContainer}>
-      <ActivityIndicator size="large" color="#6200ee" />
+      <ActivityIndicator size="large" color={COLORS.primary} />
       <Text style={styles.loadingText}>Loading amazing offers...</Text>
     </View>
   );
@@ -192,20 +211,19 @@ export const Subscriptions = ({ navigation }) => {
               subscribedProducts.includes(subscription.productId) && styles.subscribedCard
             ]}
           >
-            <LinearGradient
-              colors={['#6200ee', '#3700b3']}
-              style={styles.gradientHeader}
-            >
+            <View style={styles.gradientHeader}>
               <Text style={styles.subscriptionTitle}>{subscription.title}</Text>
               <Text style={styles.subscriptionPrice}>{subscription.localizedPrice}</Text>
-            </LinearGradient>
+            </View>
             <View style={styles.benefitsContainer}>
               <Text style={styles.benefitItem}>✓ Unlimited access to all features</Text>
               <Text style={styles.benefitItem}>✓ Priority customer support</Text>
+              <Text style={styles.benefitItem}>✓ All the Leagues available</Text>
+
               {subscription.productId.includes('yearly') && (
                 <>
-                  <Text style={styles.benefitItem}>✓ Save 17% compared to monthly</Text>
-                  <Text style={styles.benefitItem}>✓ Yearly bonus: 3 free consultations</Text>
+                  <Text style={styles.benefitItem}>✓ Save up to 17% compared to monthly</Text>
+                  <Text style={styles.benefitItem}>{"\n"}✓ All that has on monthly</Text>
                 </>
               )}
             </View>
@@ -245,7 +263,7 @@ export const Subscriptions = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f0f0f5',
+    backgroundColor: COLORS.background,
   },
   centerContainer: {
     flex: 1,
@@ -259,20 +277,20 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#333',
+    color: COLORS.text,
     textAlign: 'center',
     marginBottom: 10,
   },
   subheader: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.secondaryText,
     textAlign: 'center',
     marginBottom: 30,
   },
   loadingText: {
     marginTop: 10,
     fontSize: 16,
-    color: '#666',
+    color: COLORS.secondaryText,
   },
   errorText: {
     color: '#ff6b6b',
@@ -281,18 +299,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   retryButton: {
-    backgroundColor: '#6200ee',
+    backgroundColor: COLORS.primary,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 25,
   },
   retryButtonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
   subscriptionCard: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
     borderRadius: 15,
     marginBottom: 20,
     shadowColor: '#000',
@@ -303,32 +321,33 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   subscribedCard: {
-    borderColor: '#4CAF50',
+    borderColor: COLORS.primary,
     borderWidth: 2,
   },
   gradientHeader: {
     padding: 20,
+    backgroundColor: COLORS.primary,
   },
   subscriptionTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: 'white',
+    color: COLORS.white,
     marginBottom: 8,
   },
   subscriptionPrice: {
     fontSize: 18,
-    color: 'white',
+    color: COLORS.white,
   },
   benefitsContainer: {
     padding: 20,
   },
   benefitItem: {
     fontSize: 16,
-    color: '#333',
+    color: COLORS.text,
     marginBottom: 10,
   },
   subscribeButton: {
-    backgroundColor: '#6200ee',
+    backgroundColor: COLORS.primary,
     paddingVertical: 12,
     alignItems: 'center',
   },
@@ -336,14 +355,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#4CAF50',
   },
   buttonText: {
-    color: 'white',
+    color: COLORS.white,
     fontSize: 16,
     fontWeight: 'bold',
   },
   noSubscriptionsText: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#666',
+    color: COLORS.secondaryText,
     marginTop: 20,
   },
 });
