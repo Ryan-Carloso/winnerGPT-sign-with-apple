@@ -19,6 +19,15 @@ export default function TabsLayout() {
           ),
         }}
       />
+            <Tabs.Screen
+        name="subs"
+        options={{
+          title: translate('subs'),
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="crown" size={size} color={color} />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="settings"
         options={{
@@ -37,15 +46,7 @@ export default function TabsLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="subs"
-        options={{
-          title: translate('subs'),
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="crown" size={size} color={color} />
-          ),
-        }}
-      />
+
     </Tabs>
 
   );

@@ -14,10 +14,17 @@ import teamsTranslationsEs from './teamscreen.js/es'
 import teamsTranslationsPt from './teamscreen.js/pt'
 import teamsTranslationsFr from './teamscreen.js/fr'
 
-import loginTranLationFr from './login/fr'
-import loginTranLationPt from './login/pt'
-import loginTranLationEs from './login/es'
-import loginTranLationEn from './login/en'
+import loginTransLationFr from './login/fr'
+import loginTransLationPt from './login/pt'
+import loginTransLationEs from './login/es'
+import loginTransLationEn from './login/en'
+
+
+import SubsTransLationFr from './subs/fr'
+import SubsTransLationPt from './subs/fr'
+import SubsTransLationEs from './subs/fr'
+import SubsTransLationEn from './subs/fr'
+
 
 
 import globaltext from './globaltext'
@@ -27,7 +34,8 @@ const translations = {
     ...settingsTranslationsEn,
     ...aboutTranslationsEn,
     ...teamsTranslationsEn,
-    ...loginTranLationEn,
+    ...loginTransLationEn,
+    ...SubsTransLationEn,
     ...globaltext.en
     
   },
@@ -35,8 +43,8 @@ const translations = {
     ...settingsTranslationsEs,
     ...aboutTranslationsEs,
     ...teamsTranslationsEs,
-    ...loginTranLationEs,
-
+    ...loginTransLationEs,
+    ...SubsTransLationEs,
     ...globaltext.es
 
   },
@@ -44,7 +52,8 @@ const translations = {
     ...settingsTranslationsFr,
     ...aboutTranslationsFr,
     ...teamsTranslationsFr,
-    ...loginTranLationFr,
+    ...loginTransLationFr,
+    ...SubsTransLationFr,
     ...globaltext.fr
 
   },
@@ -52,7 +61,8 @@ const translations = {
     ...settingsTranslationsPt,
     ...aboutTranslationsPt,
     ...teamsTranslationsPt,
-    ...loginTranLationPt,
+    ...loginTransLationPt,
+    ...SubsTransLationPt,
     ...globaltext.pt
 
   },
