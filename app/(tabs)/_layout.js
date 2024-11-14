@@ -42,7 +42,7 @@ export default function TabsLayout() {
         options={{
           title: translate('subs'),
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="coins" size={size} color={color} />
+            <FontAwesome5 name="crown" size={size} color={color} />
           ),
         }}
       />

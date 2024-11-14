@@ -3,6 +3,7 @@ export default {
   teamNotFound: "Team or game not found",
   teamsText: "Team Analysis",
   analysis: "Analysis",
+  gpt_reason: "Analysis Reason: %s", // Changed to accept a parameter
   teamData: "Teams Data",
   homeTeam: "Home Team",
   awayTeam: "Away Team",

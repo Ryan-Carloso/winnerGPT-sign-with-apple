@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, ScrollView, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useLanguage } from '../../components/globalize/context';
@@ -9,9 +9,13 @@ const { width } = Dimensions.get('window');
 
 
 export default function TeamDetail() {
-  const { translate } = useLanguage();
+  const { translate, language } = useLanguage(); // Adicione language aqui
   const { gameData } = useLocalSearchParams();
   const game = gameData ? JSON.parse(gameData) : null;
+
+  useEffect(() => {
+    console.log('Idioma atual:', language); // Adiciona o console.log aqui
+  }, [language]); // Adiciona a dependência language
 
   const formatRecentForm = (form) => {
     const formItems = form.split('');
@@ -68,10 +72,7 @@ export default function TeamDetail() {
           </View>
         </View>
         
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{translate('analysis')}</Text>
-          <Text style={styles.analysis}>{game.gpt_reason}</Text>
-        </View>
+
         
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{translate('teamData')}</Text>
@@ -100,7 +101,15 @@ export default function TeamDetail() {
                 {formatRecentForm(game.away_team_recent_form || translate('notEnoughData'))}
               </View>
             </View>
+          
           </View>
+          
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{translate('analysis')}</Text>
+          <Text style={styles.analysis}>
+  {(game && game[`gpt_reason_${language}`]) || "No analysis available."}
+</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
