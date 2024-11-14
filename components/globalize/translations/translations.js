@@ -21,9 +21,9 @@ import loginTransLationEn from './login/en'
 
 
 import SubsTransLationFr from './subs/fr'
-import SubsTransLationPt from './subs/fr'
-import SubsTransLationEs from './subs/fr'
-import SubsTransLationEn from './subs/fr'
+import SubsTransLationPt from './subs/pt'
+import SubsTransLationEs from './subs/es'
+import SubsTransLationEn from './subs/en'
 
 
 

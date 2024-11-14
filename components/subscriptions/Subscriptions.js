@@ -77,8 +77,8 @@ export const Subscriptions = ({ navigation }) => {
         if (isMounted) {
           setError(`IAP initialization failed: ${error.message || 'Unknown error'}`);
           Alert.alert(
-            "Setup Error",
-            "Failed to initialize in-app purchases. Please try again later."
+            translate('setupErrorTitle'),
+            translate('setupErrorMessage')
           );
         }
       }
@@ -124,8 +124,8 @@ export const Subscriptions = ({ navigation }) => {
       console.error("Subscription fetch error:", error);
       setError(`Failed to load subscriptions: ${error.message || 'Unknown error'}`);
       Alert.alert(
-        "Loading Error",
-        "Unable to load subscription products. Please check your internet connection and try again."
+        translate('setupErrorTitle'),
+        translate('setupErrorMessage')
       );
     } finally {
       setLoading(false);
@@ -140,24 +140,24 @@ export const Subscriptions = ({ navigation }) => {
 
   const handleSubscription = async (productId) => {
     if (subscribedProducts.includes(productId)) {
-      Alert.alert("Already Subscribed", "You are already subscribed to this plan.");
+      Alert.alert(translate('alreadySubscribedTitle'),translate('alreadySubscribedMessage'),);
       return;
     }
 
     try {
       setLoading(true);
-      console.log("Initiating subscription purchase for:", productId);
 
       await requestSubscription({
         sku: productId,
         andDangerouslyFinishTransactionAutomaticallyIOS: false,
       });
 
-      Alert.alert("Success", "Thank you for your purchase!");
+      Alert.alert(translate('successMessage'));
       setSubscribedProducts([...subscribedProducts, productId]);
     } catch (error) {
       console.error("Purchase error:", error);
-      Alert.alert("Purchase Failed", `Error: ${error.message}`);
+      Alert.alert(translate('purchaseFailedTitle'),
+      translate`('purchaseFailedMessage')  ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -166,7 +166,7 @@ export const Subscriptions = ({ navigation }) => {
   const renderLoadingState = () => (
     <View style={styles.centerContainer}>
       <ActivityIndicator size="large" color={COLORS.primary} />
-      <Text style={styles.loadingText}>Loading amazing offers...</Text>
+      <Text style={styles.loadingText}>{translate('loadingText')}</Text>
     </View>
   );
 
@@ -180,25 +180,24 @@ export const Subscriptions = ({ navigation }) => {
           fetchSubscriptions();
         }}
       >
-        <Text style={styles.retryButtonText}>Retry</Text>
+        <Text style={styles.retryButtonText}>{translate('retryButtonText')}</Text>
       </TouchableOpacity>
     </View>
   );
   const renderSubscriptions = () => (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <Text style={styles.header}>Choose Your Perfect Plan</Text>
-      <Text style={styles.subheader}>Unlock premium features and exclusive bonuses</Text>
+      <Text style={styles.header}>{translate('choosePlan')}</Text>
+      <Text style={styles.subheader}>{translate('unlockFeatures')}</Text>
 
       <View style={styles.cardWrapper}>
       <View style={styles.topSection}>
-        <Text style={styles.titleText}>Free Users</Text>
+        <Text style={styles.titleText}>{translate('freeUsers')}</Text>
       </View>
       <View style={styles.infoArea}>
-        <Text style={styles.descriptionText}>Free users can only access basic features:</Text>
+        <Text style={styles.descriptionText}>{translate('freeDescription')}</Text>
         <View style={styles.featureList}>
-          <Text style={styles.benefitItem}>• Limited access to leagues</Text>
-          <Text style={styles.benefitItem}>• 3 games a day for see the predicted</Text>
-          <Text style={styles.benefitItem}>• Standard customer support</Text>
+          <Text style={styles.benefitItem}>{translate('limitedLeagues')}</Text>
+          <Text style={styles.benefitItem}>{translate('threeGames')}</Text>
         </View>
       </View>
     </View>
@@ -218,14 +217,14 @@ export const Subscriptions = ({ navigation }) => {
               <Text style={styles.subscriptionPrice}>{subscription.localizedPrice}</Text>
             </View>
             <View style={styles.benefitsContainer}>
-              <Text style={styles.benefitItem}>✓ Unlimited access to all features</Text>
-              <Text style={styles.benefitItem}>✓ Priority customer support</Text>
-              <Text style={styles.benefitItem}>✓ All the Leagues available</Text>
+              <Text style={styles.benefitItem}>{translate('unlimitedFeatures')}</Text>
+              <Text style={styles.benefitItem}>{translate('prioritySupport')}</Text>
+              <Text style={styles.benefitItem}>{translate('allLeagues')}</Text>
   
               {subscription.productId.includes('yearly') && (
                 <>
-                  <Text style={styles.benefitItem}>✓ Save up to 17% compared to monthly</Text>
-                  <Text style={styles.benefitItem}>{"\n"}✓ All that has on monthly</Text>
+              <Text style={styles.benefitItem}>{translate('save17')}</Text>
+              <Text style={styles.benefitItem}>{translate('allMonthly')}</Text>
                 </>
               )}
             </View>
@@ -239,16 +238,16 @@ export const Subscriptions = ({ navigation }) => {
             >
               <Text style={styles.buttonText}>
                 {subscribedProducts.includes(subscription.productId)
-                  ? "Subscribed"
+                  ? translate('subscribed')
                   : loading
                   ? "Processing..."
-                  : "Subscribe Now"}
+                  : translate('subscribeNow')}
               </Text>
             </TouchableOpacity>
           </TouchableOpacity>
         ))
       ) : (
-        <Text style={styles.noSubscriptionsText}>No subscriptions available</Text>
+        <Text style={styles.noSubscriptionsText}>{translate('noSubscriptionsAvailable')}</Text>
       )}
   
       
