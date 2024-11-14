@@ -14,6 +14,6 @@ export default {
     contactTitle: "Contate-nos:",
     contactDescription: "Para suporte, envie-nos um e-mail para: support@makedbyryan.tech",
     disclaimerTitle: "Aviso Legal:",
-    disclaimerDescription: "As previsões são baseadas em análise, mas não são garantidas como precisas. O aplicativo é apenas para entretenimento. Não nos responsabilizamos por quaisquer resultados ou perdas.",
+    disclaimerDescription: "As previsões são baseadas em análise, mas não são garantidas como precisas. Não nos responsabilizamos por quaisquer resultados ou perdas.",
   };
   

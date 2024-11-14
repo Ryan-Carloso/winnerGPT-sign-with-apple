@@ -14,6 +14,6 @@ export default {
     contactTitle: "Contact Us:",
     contactDescription: "For support, email us at: support@makedbyryan.tech",
     disclaimerTitle: "Disclaimer:",
-    disclaimerDescription: "Predictions are based on analysis but are not guaranteed to be accurate. The app is for entertainment only. We are not responsible for any outcomes or losses.",
+    disclaimerDescription: "Predictions are based on analysis but are not guaranteed to be accurate. We are not responsible for any outcomes or losses.",
   };
   

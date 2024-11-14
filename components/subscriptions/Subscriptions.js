@@ -191,8 +191,9 @@ export const Subscriptions = ({ navigation }) => {
       <View style={styles.infoArea}>
         <Text style={styles.descriptionText}>Free users can only access basic features:</Text>
         <View style={styles.featureList}>
-          <Text style={styles.featureItem}>• Limited access to leagues</Text>
-          <Text style={styles.featureItem}>• Standard customer support</Text>
+          <Text style={styles.benefitItem}>• Limited access to leagues</Text>
+          <Text style={styles.benefitItem}>• 3 games a day for see the predicted</Text>
+          <Text style={styles.benefitItem}>• Standard customer support</Text>
         </View>
       </View>
     </View>
@@ -259,149 +260,157 @@ export const Subscriptions = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  scrollContainer: {
-    padding: 16,
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  subheader: {
-    fontSize: 16,
-    color: COLORS.secondaryText,
-    textAlign: 'center',
-    marginBottom: 30,
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-    color: COLORS.secondaryText,
-  },
-  errorText: {
-    color: '#ff6b6b',
-    textAlign: 'center',
-    marginBottom: 20,
-    fontSize: 16,
-  },
-  retryButton: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 25,
-  },
-  retryButtonText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  subscriptionCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 15,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
-    overflow: 'hidden',
-  },
-  subscribedCard: {
-    borderColor: COLORS.primary,
-    borderWidth: 2,
-  },
-  gradientHeader: {
-    padding: 20,
-    backgroundColor: COLORS.primary,
-  },
-  subscriptionTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: COLORS.white,
-    marginBottom: 8,
-  },
-  subscriptionPrice: {
-    fontSize: 18,
-    color: COLORS.white,
-  },
-  benefitsContainer: {
-    padding: 20,
-  },
-  benefitItem: {
-    fontSize: 16,
-    color: COLORS.text,
-    marginBottom: 10,
-  },
-  subscribeButton: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  subscribedButton: {
-    backgroundColor: '#4CAF50',
-  },
-  buttonText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  noSubscriptionsText: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: COLORS.secondaryText,
-    marginTop: 20,
-  },
+    safeArea: {
+      flex: 1,
+      backgroundColor: COLORS.background,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+    scrollContainer: {
+      padding: 16,
+    },
+    header: {
+      fontSize: 32,
+      fontWeight: 'bold',
+      color: COLORS.text,
+      textAlign: 'center',
+      marginBottom: 12,
+    },
+    subheader: {
+      fontSize: 18,
+      color: COLORS.secondaryText,
+      textAlign: 'center',
+      marginBottom: 32,
+    },
+    loadingText: {
+      marginTop: 16,
+      fontSize: 18,
+      color: COLORS.secondaryText,
+    },
+    errorText: {
+      color: '#ff6b6b',
+      textAlign: 'center',
+      marginBottom: 24,
+      fontSize: 18,
+    },
+    retryButton: {
+      backgroundColor: COLORS.primary,
+      paddingVertical: 14,
+      paddingHorizontal: 28,
+      borderRadius: 30,
+      elevation: 3,
+    },
+    retryButtonText: {
+      color: COLORS.white,
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    subscriptionCard: {
+      backgroundColor: COLORS.white,
+      borderRadius: 20,
+      marginBottom: 24,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 5,
+      overflow: 'hidden',
+      borderColor: COLORS.primary,
+      borderWidth: 2,
 
-  cardWrapper: {
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    overflow: 'hidden',
-    shadowColor: COLORS.primary,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    margin: 4,
-  },
-  topSection: {
-    backgroundColor: COLORS.primary,
-    padding: 16,
-  },
-  titleText: {
-    color: COLORS.white,
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  infoArea: {
-    padding: 16,
-    backgroundColor: COLORS.background,
-  },
-  descriptionText: {
-    color: COLORS.text,
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  featureList: {
-    marginTop: 8,
-  },
-  featureItem: {
-    color: COLORS.secondaryText,
-    fontSize: 14,
-    marginBottom: 8,
-  },
-});
+    },
+    subscribedCard: {
+      borderColor: COLORS.primary,
+      borderWidth: 2,
+    },
+    gradientHeader: {
+      padding: 24,
+      backgroundColor: COLORS.primary,
+    },
+    subscriptionTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: COLORS.white,
+      marginBottom: 8,
+    },
+    subscriptionPrice: {
+      fontSize: 20,
+      color: COLORS.white,
+    },
+    benefitsContainer: {
+      padding: 24,
+    },
+    benefitItem: {
+      fontSize: 16,
+      color: COLORS.text,
+      marginBottom: 12,
+      paddingLeft: 8,
+      borderLeftWidth: 2,
+      borderLeftColor: COLORS.primary,
+    },
+    subscribeButton: {
+      backgroundColor: COLORS.primary,
+      paddingVertical: 16,
+      alignItems: 'center',
+      marginHorizontal: 24,
+      marginBottom: 24,
+      borderRadius: 12,
+      elevation: 2,
+    },
+    subscribedButton: {
+      backgroundColor: '#4CAF50',
+    },
+    buttonText: {
+      color: COLORS.white,
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    noSubscriptionsText: {
+      fontSize: 18,
+      textAlign: 'center',
+      color: COLORS.secondaryText,
+      marginTop: 24,
+    },
+    cardWrapper: {
+      backgroundColor: COLORS.white,
+      borderRadius: 20,
+      overflow: 'hidden',
+      shadowColor: COLORS.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 5,
+      marginBottom: 24,
+      borderColor: COLORS.primary,
+      borderWidth: 2,
+    },
+    topSection: {
+      backgroundColor: COLORS.primary,
+      padding: 20,
+    },
+    titleText: {
+      color: COLORS.white,
+      fontSize: 26,
+      fontWeight: 'bold',
+    },
+    infoArea: {
+      padding: 20,
+      backgroundColor: COLORS.background,
+    },
+    descriptionText: {
+      color: COLORS.text,
+      fontSize: 18,
+      fontWeight: '600',
+      marginBottom: 16,
+    },
+    featureList: {
+      marginTop: 12,
+    },
 
-export default Subscriptions;
+  });
+  
+  export default Subscriptions;
