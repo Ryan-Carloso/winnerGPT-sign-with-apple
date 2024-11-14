@@ -119,7 +119,7 @@ export default function App() {
     );
   }
 
-  if (isLoggedIn) { // Use isLoggedIn state variable
+  if (!isLoggedIn) { // Use isLoggedIn state variable
   //if (!isLoggedIn) { // Use isLoggedIn state variable to work on prod put the '!' there and thats fine
     return (
       <Auth setIsLoggedIn={setIsLoggedIn} /> 

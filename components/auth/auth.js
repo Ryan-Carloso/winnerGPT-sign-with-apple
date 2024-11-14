@@ -4,6 +4,8 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import 'react-native-url-polyfill/auto';
+import { useLanguage } from '../globalize/context';
+
 
 const supabase = createClient(
   "https://tlaihqorrptgeflxarvm.supabase.co",
@@ -20,6 +22,8 @@ const supabase = createClient(
 
 export default function Auth({ setIsLoggedIn }) { // Add setIsLoggedIn prop
   const [error, setError] = useState(null); // Initialize error state to null
+  const { translate } = useLanguage();
+
 
   const handleAppleSignIn = async () => {
     try {      
@@ -56,8 +60,8 @@ export default function Auth({ setIsLoggedIn }) { // Add setIsLoggedIn prop
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.title}>Welcome</Text>
-          <Text style={styles.subtitle}>Sign in to continue</Text>
+          <Text style={styles.title}>{translate('welcome')}</Text>
+          <Text style={styles.subtitle}>{translate('signInToContinue')}</Text>
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
             buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
@@ -74,8 +78,8 @@ export default function Auth({ setIsLoggedIn }) { // Add setIsLoggedIn prop
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Welcome</Text>
-        <Text style={styles.subtitle}>Sign in options not available</Text>
+          <Text style={styles.title}>{translate('welcome')}</Text>
+          <Text style={styles.subtitle}>{translate('errorOccurred')}</Text>
       </View>
     </SafeAreaView>
   );

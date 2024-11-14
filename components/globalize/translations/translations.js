@@ -26,6 +26,12 @@ import SubsTransLationEs from './subs/es'
 import SubsTransLationEn from './subs/en'
 
 
+import AuthTransLationFr from './auth/fr'
+import AuthTransLationPt from './auth/pt'
+import AuthTransLationEs from './auth/es'
+import AuthTransLationEn from './auth/en'
+
+
 
 import globaltext from './globaltext'
 
@@ -36,6 +42,7 @@ const translations = {
     ...teamsTranslationsEn,
     ...loginTransLationEn,
     ...SubsTransLationEn,
+    ...AuthTransLationEn,
     ...globaltext.en
     
   },
@@ -45,6 +52,7 @@ const translations = {
     ...teamsTranslationsEs,
     ...loginTransLationEs,
     ...SubsTransLationEs,
+    ...AuthTransLationEs,
     ...globaltext.es
 
   },
@@ -54,6 +62,7 @@ const translations = {
     ...teamsTranslationsFr,
     ...loginTransLationFr,
     ...SubsTransLationFr,
+    ...AuthTransLationFr,
     ...globaltext.fr
 
   },
@@ -63,6 +72,7 @@ const translations = {
     ...teamsTranslationsPt,
     ...loginTransLationPt,
     ...SubsTransLationPt,
+    ...AuthTransLationPt,
     ...globaltext.pt
 
   },
