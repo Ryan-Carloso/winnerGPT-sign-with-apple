@@ -18,6 +18,8 @@ import {
   getProducts,
   endConnection,
 } from "react-native-iap";
+import { useRouter } from 'expo-router';
+
 
 import { styles } from "./styles";
 import { useLanguage } from '../globalize/context';
@@ -53,6 +55,7 @@ export const Subscriptions = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const { translate } = useLanguage();
   const [error, setError] = useState(null);
+  const router = useRouter();
   const [connectionEstablished, setConnectionEstablished] = useState(false);
   const [availableSubscriptions, setAvailableSubscriptions] = useState([]);
   const [subscribedProducts, setSubscribedProducts] = useState([]);
@@ -156,7 +159,9 @@ export const Subscriptions = ({ navigation }) => {
       setSubscribedProducts([...subscribedProducts, productId]);
     } catch (error) {
       console.error("Purchase error:", error);
+      router.push('/subs');
       Alert.alert(translate('purchaseFailedTitle'),
+      router.push('/subs'),
       translate`('purchaseFailedMessage')  ${error.message}`);
     } finally {
       setLoading(false);
