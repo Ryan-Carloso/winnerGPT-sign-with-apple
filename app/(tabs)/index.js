@@ -7,6 +7,19 @@ import { styles } from '../../styles/GlobalStyles';
 import { fetchData } from '../../utils/api';
 import Auth from '../../components/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sentry from "@sentry/react-native";
+import trackUserAnalytics from '../../components/Analytics/TrackUser';
+
+
+Sentry.init({
+  dsn: "https://d95ffea76416fb81f8ba5846bf1c7a6c@o4507664027287552.ingest.de.sentry.io/4508311786946640",
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+  // profilesSampleRate is relative to tracesSampleRate.
+  // Here, we'll capture profiles for 100% of transactions.
+  profilesSampleRate: 1.0,
+});
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -22,6 +35,8 @@ export default function App() {
 
   useEffect(() => {
     // Check login status when the app starts
+    trackUserAnalytics();
+
     const checkLoginStatus = async () => {
       try {
         const loggedInStatus = await AsyncStorage.getItem('isLoggedIn');
