@@ -34,7 +34,7 @@ export default function TabsLayout() {
         options={{
           title: translate('settings'),
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="language" size={24} color="black" />
+            <FontAwesome5 name="language" size={size} color={color} />
           ),
         }}
       />
