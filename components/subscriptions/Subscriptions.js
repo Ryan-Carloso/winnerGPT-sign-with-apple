@@ -1,28 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-} from "react-native";
-import {
-  initConnection,
-  requestSubscription,
-  useIAP,
-  getProducts,
-  endConnection,
-} from "react-native-iap";
+import { ScrollView, Text, View, Platform, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert, Dimensions, } from "react-native";
+import { initConnection, requestSubscription, useIAP, getProducts, endConnection,} from "react-native-iap";
 import { useRouter } from 'expo-router';
-
-
 import { styles } from "./styles";
 import { useLanguage } from '../globalize/context';
+
+import trackSubsAnalytics from '../../components/Analytics/TrackSubs'
 
 const COLORS = {
     primary: '#1E88E5',
@@ -37,21 +20,15 @@ const { width } = Dimensions.get('window');
 
 const ITUNES_SHARED_SECRET = "c3b2572aaae84d9c8ca0b06b782db96e";
 
+
+
 const subscriptionSkus = Platform.select({
   ios: ["rc499mo", "rc1999yearly"],
   android: ["androidTestSku"],
 });
 
 export const Subscriptions = ({ navigation }) => {
-  const {
-    connected,
-    subscriptions,
-    getSubscriptions,
-    currentPurchase,
-    finishTransaction,
-    getPurchaseHistory,
-  } = useIAP();
-
+  const { connected, subscriptions, getSubscriptions, currentPurchase, finishTransaction, getPurchaseHistory, } = useIAP();
   const [loading, setLoading] = useState(false);
   const { translate } = useLanguage();
   const [error, setError] = useState(null);
@@ -61,7 +38,10 @@ export const Subscriptions = ({ navigation }) => {
   const [subscribedProducts, setSubscribedProducts] = useState([]);
 
   useEffect(() => {
+    trackSubsAnalytics();
+    
     let isMounted = true;
+    
 
     const setupIAP = async () => {
       try {
@@ -92,6 +72,7 @@ export const Subscriptions = ({ navigation }) => {
     return () => {
       isMounted = false;
       endConnection();
+
     };
   }, []);
 
