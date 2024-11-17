@@ -1,6 +1,8 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Entypo from '@expo/vector-icons/Entypo';
+
 
 
 import { useLanguage } from '../../components/globalize/context'
@@ -35,6 +37,16 @@ export default function TabsLayout() {
           title: translate('settings'),
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="language" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="newsletter"
+        options={{
+          title: translate('newsletter'),
+          tabBarIcon: ({ color, size }) => (
+          <Entypo name="newsletter" size={size} color={color} />
+            
           ),
         }}
       />
