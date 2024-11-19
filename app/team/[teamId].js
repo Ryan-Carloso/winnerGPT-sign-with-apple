@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import { View, Text, ScrollView, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, ScrollView, StyleSheet, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useLanguage } from '../../components/globalize/context';
 
 
@@ -12,6 +12,8 @@ export default function TeamDetail() {
   const { translate, language } = useLanguage(); // Adicione language aqui
   const { gameData } = useLocalSearchParams();
   const game = gameData ? JSON.parse(gameData) : null;
+  const router = useRouter();
+
 
   useEffect(() => {
     console.log('Idioma atual:', language); // Adiciona o console.log aqui
@@ -62,6 +64,7 @@ export default function TeamDetail() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>{game.home_team_name} vs {game.away_team_name}</Text>
@@ -72,6 +75,13 @@ export default function TeamDetail() {
           </View>
         </View>
         
+        <TouchableOpacity 
+      style={styles.buttonNewsLetter} 
+      onPress={() => router.push('/newsletter')}
+    >
+      <Text style={styles.textNewsletter}>Go to the Newsletter</Text>
+    </TouchableOpacity>
+
 
         
         <View style={styles.section}>
@@ -79,7 +89,7 @@ export default function TeamDetail() {
           <View style={styles.teamDataContainer}>
             <View style={styles.teamColumn}>
               <Text style={styles.teamName}>{game.home_team_name}</Text>
-              <Text style={styles.detail}>{translate('winPercentage')}: <Text style={styles.bold}>{game.home_team_win_percentage}%</Text></Text>
+              <Text style={styles.detail}>{translate('homeWinPercentage')}: <Text style={styles.bold}>{game.home_team_win_percentage}%</Text></Text>
               <Text style={styles.detail}>{translate('cleanSheets')}: <Text style={styles.bold}>{game.home_team_clean_sheets}</Text></Text>
               <Text style={styles.detail}>{translate('failedToScore')}: <Text style={styles.bold}>{game.home_team_failed_to_score}</Text></Text>
               <Text style={styles.detail}>{translate('biggestWinningStreak')}: <Text style={styles.bold}>{game.home_team_biggest_winning_streak}</Text></Text>
@@ -91,7 +101,7 @@ export default function TeamDetail() {
             </View>
             <View style={styles.teamColumn}>
               <Text style={styles.teamName}>{game.away_team_name}</Text>
-              <Text style={styles.detail}>{translate('winPercentage')}: <Text style={styles.bold}>{game.away_team_win_percentage}%</Text></Text>
+              <Text style={styles.detail}>{translate('awayWinPercentage')}: <Text style={styles.bold}>{game.away_team_win_percentage}%</Text></Text>
               <Text style={styles.detail}>{translate('cleanSheets')}: <Text style={styles.bold}>{game.away_team_clean_sheets}</Text></Text>
               <Text style={styles.detail}>{translate('failedToScore')}: <Text style={styles.bold}>{game.away_team_failed_to_score}</Text></Text>
               <Text style={styles.detail}>{translate('biggestWinningStreak')}: <Text style={styles.bold}>{game.away_team_biggest_winning_streak}</Text></Text>
@@ -101,6 +111,7 @@ export default function TeamDetail() {
                 {formatRecentForm(game.away_team_recent_form || translate('notEnoughData'))}
               </View>
             </View>
+
           
           </View>
           
@@ -120,6 +131,25 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  buttonNewsLetter: {
+    backgroundColor: '#1e90ff', // Azul vibrante
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3, // Para Android
+  },
+  textNewsletter: {
+    color: '#fff', // Texto branco
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   container: {
     padding: 16,
