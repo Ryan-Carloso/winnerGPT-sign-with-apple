@@ -16,4 +16,6 @@ export default {
     notEnoughtData: "  Dados insuficientes",
     NewsTitle: "Inscreva-se na nossa Newsletter",
     NewsBellowText: "Receba as últimas notícias e atualizações de jogos ao se inscrever acima.",
+    AlertTitle: "Limite Diário do Plano Gratuito Alcançado",
+    AlertDesc: "Você atingiu o limite diário de 5 jogos preditivos de IA no plano gratuito. Faça upgrade para aproveitar previsões ilimitadas e mais recursos!" 
 };

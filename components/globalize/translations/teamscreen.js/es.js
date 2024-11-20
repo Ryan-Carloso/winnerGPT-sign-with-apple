@@ -16,4 +16,6 @@ export default {
     notEnoughtData: "Datos insuficientes",
     NewsTitle: "Suscríbete a nuestro boletín",
     NewsBellowText: "Recibe las últimas noticias y actualizaciones de juegos al suscribirte arriba.",
+    AlertTitle: "Límite Diario del Plan Gratuito Alcanzado",
+    AlertDesc: "Has alcanzado el límite diario de 5 juegos predichos por IA en el plan gratuito. ¡Actualiza para disfrutar de predicciones ilimitadas y más funciones!"
 };

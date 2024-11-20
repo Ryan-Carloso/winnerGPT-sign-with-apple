@@ -8,7 +8,7 @@ export default {
     freeUsers: "Usuarios Gratuitos",
     freeDescription: "Los usuarios gratuitos solo pueden acceder a funciones básicas:",
     limitedLeagues: "• Acceso limitado a ligas",
-    threeGames: "• 3 juegos al día para ver la predicción",
+    threeGames: "• 5 juegos al día para ver la predicción",
     standardSupport: "• Soporte estándar al cliente",
     noSubscriptionsAvailable: "No hay suscripciones disponibles",
     subscribed: "Suscrito",
