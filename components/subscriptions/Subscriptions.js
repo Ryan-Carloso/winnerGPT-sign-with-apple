@@ -82,6 +82,8 @@ export const Subscriptions = () => {
       setLoading(true);
 
       const products = await getProducts({ skus: subscriptionSkus });
+      setProducts(products);
+
       //console.log("Available products:", products);
       products.forEach(product => {
         console.log("localizedPrice:", product.localizedPrice);
@@ -188,11 +190,7 @@ export const Subscriptions = () => {
           <Text style={styles.descriptionText}>
             {translate("freeDescription")}
           </Text>
-          {products.map((product, index) => (
-            <Text key={index}>
-              {product.localizedPrice}
-            </Text>
-          ))}
+
           <View style={styles.featureList}>
             <Text style={styles.benefitItem}>
               {translate("limitedLeagues")}
@@ -215,6 +213,22 @@ export const Subscriptions = () => {
           >
             <View style={styles.gradientHeader}>
               <Text style={styles.subscriptionTitle}>{subscription.title}</Text>
+
+              <Text style={styles.subscriptionPrice}>
+  {(() => {
+    const priceString = subscription.localizedPrice;
+    const currencySymbol = priceString.match(/[^\d.,\s]/g)?.join('') || ''; // Extrai símbolo da moeda
+    const cleanPrice = priceString.replace(/[^0-9,.\s]/g, '').trim();
+    const normalizedPrice = cleanPrice.replace(',', '.');
+    const price = parseFloat(normalizedPrice);
+
+    return isNaN(price) 
+      ? 'Invalid Price' 
+      : `${currencySymbol}${Math.round(price * 1.3)}`; // Adiciona 30% e arredonda
+  })()}
+</Text>
+
+
               <Text style={styles.subscriptionPrice}>
                 {subscription.localizedPrice}
               </Text>
@@ -271,6 +285,7 @@ export const Subscriptions = () => {
       <View>
         <Text style={styles.sectionTitle}>{translate("contactTitle")}</Text>
         <Text style={styles.disclaimer}>{translate("contactDescription")}</Text>
+
       </View>
       <TouchableOpacity
         style={styles.button}
