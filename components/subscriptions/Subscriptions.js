@@ -1,22 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  Text,
-  View,
-  Platform,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-} from "react-native";
-import {
-  initConnection,
-  requestSubscription,
-  useIAP,
-  getProducts,
-  endConnection,
-} from "react-native-iap";
+import {ScrollView, Text, View, Platform, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert, Dimensions,} from "react-native";
+import {initConnection, requestSubscription, useIAP, getProducts, endConnection,} from "react-native-iap";
 import { useRouter } from "expo-router";
 import { styles } from "./styles";
 import { useLanguage } from "../globalize/context";
@@ -40,15 +24,8 @@ const subscriptionSkus = Platform.select({
   android: ["androidTestSku"],
 });
 
-export const Subscriptions = ({ navigation }) => {
-  const {
-    connected,
-    subscriptions,
-    getSubscriptions,
-    currentPurchase,
-    finishTransaction,
-    getPurchaseHistory,
-  } = useIAP();
+export const Subscriptions = () => {
+  const {connected, subscriptions, getSubscriptions, currentPurchase, finishTransaction, getPurchaseHistory,} = useIAP();
   const [loading, setLoading] = useState(false);
   const { translate } = useLanguage();
   const [error, setError] = useState(null);
@@ -56,6 +33,8 @@ export const Subscriptions = ({ navigation }) => {
   const [connectionEstablished, setConnectionEstablished] = useState(false);
   const [availableSubscriptions, setAvailableSubscriptions] = useState([]);
   const [subscribedProducts, setSubscribedProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+
 
   useEffect(() => {
     trackSubsAnalytics();
@@ -103,8 +82,10 @@ export const Subscriptions = ({ navigation }) => {
       setLoading(true);
 
       const products = await getProducts({ skus: subscriptionSkus });
-      console.log("Available products:", products);
-
+      //console.log("Available products:", products);
+      products.forEach(product => {
+        console.log("localizedPrice:", product.localizedPrice);
+      });
       if (!products || products.length === 0) {
         console.log("No products found for SKUs:", subscriptionSkus);
         throw new Error("No products available for purchase");
@@ -207,6 +188,11 @@ export const Subscriptions = ({ navigation }) => {
           <Text style={styles.descriptionText}>
             {translate("freeDescription")}
           </Text>
+          {products.map((product, index) => (
+            <Text key={index}>
+              {product.localizedPrice}
+            </Text>
+          ))}
           <View style={styles.featureList}>
             <Text style={styles.benefitItem}>
               {translate("limitedLeagues")}
