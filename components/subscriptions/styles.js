@@ -161,5 +161,31 @@ export const styles = StyleSheet.create({
     featureList: {
       marginTop: 12,
     },
+    sectionTitle: {
+      fontSize: 22,
+      fontWeight: '600',
+      color: COLORS.primary,
+      marginTop: 20,
+      marginBottom: 10,
+    },
+    description: {
+      fontSize: 16,
+      color: COLORS.text,
+      marginBottom: 15,
+      lineHeight: 24,
+    },
+    button: {
+      backgroundColor: '#007bff', // Blue background
+      paddingVertical: 12,        // Vertical padding
+      paddingHorizontal: 20,      // Horizontal padding
+      borderRadius: 8,           // Rounded corners
+      alignItems: 'center',      // Center text
+      marginVertical: 10,        // Space between buttons
+    },
+    buttonText: {
+      color: '#ffffff',          // White text
+      fontSize: 16,              // Text size
+      fontWeight: 'bold',        // Bold text
+    },
 
   });

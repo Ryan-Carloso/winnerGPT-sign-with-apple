@@ -22,5 +22,7 @@ export default {
     unlimitedFeatures: "✓ Accès illimité à toutes les fonctionnalités",
     allLeagues: "✓ Toutes les ligues disponibles",
     save17: "✓ Économisez jusqu'à 17% par rapport au mensuel",
-    allMonthly: "✓ Tout ce qui est disponible mensuellement"
+    allMonthly: "✓ Tout ce qui est disponible mensuellement",
+    yearlypay: "✓ L'abonnement est renouvelé chaque année.",
+    monthlypay: "✓ L'abonnement est renouvelé chaque mois.",
   };

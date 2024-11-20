@@ -22,5 +22,7 @@ export default {
     unlimitedFeatures: "✓ Unlimited access to all features",
     allLeagues: "✓ All the Leagues available",
     save17: "✓ Save up to 17% compared to monthly",
-    allMonthly: "✓ All that has on monthly"
+    allMonthly: "✓ All that has on monthly",
+    yearlypay: "✓ The subscription is renewed annually.",
+    monthlypay: "✓ The subscription is renewed monthly.",
   };

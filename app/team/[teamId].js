@@ -95,12 +95,11 @@ export default function TeamDetail() {
             onPress={() => router.push("/newsletter")}
           >
             <Text style={styles.textNewsletter}>
-              Subscribe to our Newsletter
+            {translate("NewsTitle")}
             </Text>
           </TouchableOpacity>
           <Text style={styles.NewsTitle}>
-            {"      "}
-            Get the latest game news and updates by subscribing above.
+            {translate("NewsBellowText")}
           </Text>
         </View>
 
@@ -212,6 +211,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
+    marginTop: -3
   },
   NewsTitle: {
     fontSize: 14,
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
   detail: {
     fontSize: 14,
     color: "#333",
-    marginBottom: 8,
+    marginBottom: 5,
   },
   bold: {
     fontWeight: "bold",

@@ -13,5 +13,7 @@ export default {
     recentForm: "Forme récente",
     biggestWinningStreak: "séquence de victoires de",
     biggestLosingStreak: "séquence de défaites de",
-    notEnoughtData: "données insuffisantes"
+    notEnoughtData: "données insuffisantes",
+    NewsTitle: "Abonnez-vous à notre newsletter",
+    NewsBellowText: "Recevez les dernières actualités et mises à jour sur les jeux en vous abonnant ci-dessus.",
 };

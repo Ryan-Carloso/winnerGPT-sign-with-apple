@@ -14,5 +14,7 @@ export default {
   recentForm: "Recent form",
   biggestWinningStreak: "winning streak of",
   biggestLosingStreak: "losing streak of",
-  notEnoughtData: "Insufficient data"
+  notEnoughtData: "Insufficient data",
+  NewsTitle: "Subscribe to our Newsletter",
+  NewsBellowText: "Get the latest game news and updates by subscribing above.",
 };
