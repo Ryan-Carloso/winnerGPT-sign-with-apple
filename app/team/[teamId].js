@@ -9,24 +9,26 @@ const { width } = Dimensions.get('window');
 
 
 export default function TeamDetail() {
-  const { translate, language } = useLanguage(); // Adicione language aqui
+  const { translate, language } = useLanguage(); 
   const { gameData } = useLocalSearchParams();
   const game = gameData ? JSON.parse(gameData) : null;
   const router = useRouter();
 
 
   useEffect(() => {
-    console.log('Idioma atual:', language); // Adiciona o console.log aqui
-  }, [language]); // Adiciona a dependência language
+    console.log('Idioma atual:', language); 
+  }, [language]); 
 
   const formatRecentForm = (form) => {
     const formItems = form.split('');
-    const limit = 5; // Número máximo de caracteres por linha
+    const limit = 5; 
     const lines = [];
+    let lineKeyCounter = 0; // Counter for unique line keys
+    let separatorKeyCounter = 0; // Counter for unique separator keys
 
     for (let i = 0; i < formItems.length; i += limit) {
       lines.push(
-        <View key={`line-${i}`} style={styles.formLine}>
+        <View key={`line-${lineKeyCounter++}`} style={styles.formLine}>
           {formItems.slice(i, i + limit).map((char, index) => {
             let backgroundColor;
             let textColor = 'white';
@@ -52,7 +54,7 @@ export default function TeamDetail() {
           })}
         </View>
       );
-      lines.push(<Text key={`separator-${i}`} style={styles.formSeparator}></Text>); // Adiciona separador entre linhas
+      lines.push(<Text key={`separator-${separatorKeyCounter++}`} style={styles.formSeparator}></Text>);
     }
 
     return (
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   buttonNewsLetter: {
-    backgroundColor: '#1e90ff', // Azul vibrante
+    backgroundColor: '#1e90ff', 
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -144,10 +146,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 3, // Para Android
+    elevation: 3, 
   },
   textNewsletter: {
-    color: '#fff', // Texto branco
+    color: '#fff', 
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -255,6 +257,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   formSeparator: {
-    height: 8, // Espaço entre as linhas
+    height: 8, 
   },
 });
