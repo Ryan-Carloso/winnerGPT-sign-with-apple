@@ -92,6 +92,12 @@ export const styles = StyleSheet.create({
       fontSize: 20,
       color: COLORS.white,
     },
+    oldPrice: {
+      fontSize: 20,
+      textDecorationLine: "line-through", // Aplica o texto cortado
+      color: "red", // Cor cinza para indicar desvalorização
+      marginRight: 8, // Espaçamento entre os preços
+    },
     benefitsContainer: {
       padding: 24,
     },

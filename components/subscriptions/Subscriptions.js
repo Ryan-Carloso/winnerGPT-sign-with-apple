@@ -1,6 +1,22 @@
 import React, { useEffect, useState } from "react";
-import {ScrollView, Text, View, Platform, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert, Dimensions,} from "react-native";
-import {initConnection, requestSubscription, useIAP, getProducts, endConnection,} from "react-native-iap";
+import {
+  ScrollView,
+  Text,
+  View,
+  Platform,
+  TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+} from "react-native";
+import {
+  initConnection,
+  requestSubscription,
+  useIAP,
+  getProducts,
+  endConnection,
+} from "react-native-iap";
 import { useRouter } from "expo-router";
 import { styles } from "./styles";
 import { useLanguage } from "../globalize/context";
@@ -25,7 +41,14 @@ const subscriptionSkus = Platform.select({
 });
 
 export const Subscriptions = () => {
-  const {connected, subscriptions, getSubscriptions, currentPurchase, finishTransaction, getPurchaseHistory,} = useIAP();
+  const {
+    connected,
+    subscriptions,
+    getSubscriptions,
+    currentPurchase,
+    finishTransaction,
+    getPurchaseHistory,
+  } = useIAP();
   const [loading, setLoading] = useState(false);
   const { translate } = useLanguage();
   const [error, setError] = useState(null);
@@ -34,7 +57,6 @@ export const Subscriptions = () => {
   const [availableSubscriptions, setAvailableSubscriptions] = useState([]);
   const [subscribedProducts, setSubscribedProducts] = useState([]);
   const [products, setProducts] = useState([]);
-
 
   useEffect(() => {
     trackSubsAnalytics();
@@ -85,7 +107,7 @@ export const Subscriptions = () => {
       setProducts(products);
 
       //console.log("Available products:", products);
-      products.forEach(product => {
+      products.forEach((product) => {
         console.log("localizedPrice:", product.localizedPrice);
       });
       if (!products || products.length === 0) {
@@ -213,25 +235,30 @@ export const Subscriptions = () => {
           >
             <View style={styles.gradientHeader}>
               <Text style={styles.subscriptionTitle}>{subscription.title}</Text>
+              <View style={{ display: 'flex', flexDirection: 'row' }}>
+              <Text style={styles.subscriptionPrice}>De </Text>
+              <Text style={styles.oldPrice}>
+                {(() => {
+                  const priceString = subscription.localizedPrice;
+                  const currencySymbol =
+                    priceString.match(/[^\d.,\s]/g)?.join("") || ""; // Extrai símbolo da moeda
+                  const cleanPrice = priceString
+                    .replace(/[^0-9,.\s]/g, "")
+                    .trim();
+                  const normalizedPrice = cleanPrice.replace(",", ".");
+                  const price = parseFloat(normalizedPrice);
 
-              <Text style={styles.subscriptionPrice}>
-  {(() => {
-    const priceString = subscription.localizedPrice;
-    const currencySymbol = priceString.match(/[^\d.,\s]/g)?.join('') || ''; // Extrai símbolo da moeda
-    const cleanPrice = priceString.replace(/[^0-9,.\s]/g, '').trim();
-    const normalizedPrice = cleanPrice.replace(',', '.');
-    const price = parseFloat(normalizedPrice);
+                  return isNaN(price)
+                    ? "Invalid Price"
+                    : `${currencySymbol}${Math.round(price * 1.4)}`; // Adiciona 30% e arredonda
+                })()}
+              </Text>
 
-    return isNaN(price) 
-      ? 'Invalid Price' 
-      : `${currencySymbol}${Math.round(price * 1.3)}`; // Adiciona 30% e arredonda
-  })()}
-</Text>
-
-
+              <Text style={styles.subscriptionPrice}>Por </Text>
               <Text style={styles.subscriptionPrice}>
                 {subscription.localizedPrice}
               </Text>
+              </View>
             </View>
             <View style={styles.benefitsContainer}>
               <Text style={styles.benefitItem}>
@@ -285,7 +312,6 @@ export const Subscriptions = () => {
       <View>
         <Text style={styles.sectionTitle}>{translate("contactTitle")}</Text>
         <Text style={styles.disclaimer}>{translate("contactDescription")}</Text>
-
       </View>
       <TouchableOpacity
         style={styles.button}
@@ -297,7 +323,6 @@ export const Subscriptions = () => {
       >
         <Text style={styles.buttonText}>Apple EULA</Text>
       </TouchableOpacity>
-      
     </ScrollView>
   );
 
