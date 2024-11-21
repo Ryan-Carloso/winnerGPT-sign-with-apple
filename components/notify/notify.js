@@ -21,15 +21,36 @@ export const initializeNotifications = async () => {
   }
 };
 
-export const sendAppOpenNotification = async () => {
+export const scheduleLocalDailyNotification = async () => {
   try {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Welcome Back! 👋',
-        body: 'Thank you for opening our app',
-        data: { type: 'app_open' },
+        title: 'New Games just out!',
+        body: 'Hey! It’s 12 PM! Check the app for updates! on new games',
+        data: { type: 'daily_reminder' },
       },
-      trigger: null, // null means the notification triggers immediately
+      trigger: {
+        hour: 12, // 12 PM (local time)
+        minute: 0,
+        repeats: true, // Ensures it repeats daily
+      },
+    });
+    console.log('Daily notification scheduled for 12 PM local time!');
+  } catch (error) {
+    console.log('Error scheduling daily notification:', error);
+  }
+};
+
+// New function to send custom notifications
+export const sendNotification = async (title, body, data) => {
+  try {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title,
+        body: body,
+        data: data,
+      },
+      trigger: null,
     });
   } catch (error) {
     console.log('Error sending notification:', error);

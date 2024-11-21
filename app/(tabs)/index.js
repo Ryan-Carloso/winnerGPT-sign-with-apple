@@ -9,7 +9,7 @@ import Auth from '../../components/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from "@sentry/react-native";
 import trackUserAnalytics from '../../components/Analytics/TrackUser';
-import { initializeNotifications, sendAppOpenNotification } from '../../components/notify/notify';
+import { initializeNotifications, scheduleLocalDailyNotification } from '../../components/notify/notify';
 
 
 
@@ -39,9 +39,7 @@ export default function App() {
     // Check login status when the app starts
     trackUserAnalytics();
     initializeNotifications();
-    
-    // Send notification when app opens
-    sendAppOpenNotification();
+    scheduleLocalDailyNotification();
 
     const checkLoginStatus = async () => {
       try {

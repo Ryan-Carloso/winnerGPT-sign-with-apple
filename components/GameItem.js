@@ -8,6 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { purchaseItem, getPurchaseHistory } from 'react-native-iap'; // Import from react-native-iap
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
+import { sendNotification } from './notify/notify';
+
+
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const COLORS = {
@@ -59,8 +62,11 @@ export default function GameItem({ item, numColumns = 1 }) {
   
   const handlePressTeam = async () => {
     if (!hasSubscription) { //put an ! here  if (!hasSubscription) {
-      // User has a subscription, proceed with the click logic without limiting clicks
-      console.log('User has an active subscription!'); // Log if the user has a subscription
+      sendNotification(
+        'Upgrade Your Subscription!',
+        'Unlock all features by upgrading your subscription.',
+        { type: 'subscription_upgrade' }
+      );
   
       // Set the click count and mark the button as pressed
       setClickCount(prevCount => prevCount + 1);
