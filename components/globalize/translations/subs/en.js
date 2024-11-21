@@ -25,4 +25,6 @@ export default {
     allMonthly: "✓ All that has on monthly",
     yearlypay: "✓ The subscription is renewed annually.",
     monthlypay: "✓ The subscription is renewed monthly.",
+    oldprice: "from ",
+    newprice: "to ",  
   };

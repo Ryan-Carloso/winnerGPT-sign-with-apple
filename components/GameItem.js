@@ -58,7 +58,7 @@ export default function GameItem({ item, numColumns = 1 }) {
   };
   
   const handlePressTeam = async () => {
-    if (hasSubscription) { //put an ! here  if (!hasSubscription) {
+    if (!hasSubscription) { //put an ! here  if (!hasSubscription) {
       // User has a subscription, proceed with the click logic without limiting clicks
       console.log('User has an active subscription!'); // Log if the user has a subscription
   
@@ -73,7 +73,7 @@ export default function GameItem({ item, numColumns = 1 }) {
       });
     } else {
       // User doesn't have a subscription, check click count limit
-      if (clickCount >= 0) { //here need to be 5 if (clickCount >= 5) {
+      if (clickCount >= 5) { //here need to be 5 if (clickCount >= 5) {
         // If the click count is greater than or equal to 3, show an alert and redirect
         Alert.alert(translate('AlertTitle'), translate('AlertDesc'));
         router.push('/subs');

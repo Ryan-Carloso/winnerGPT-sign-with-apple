@@ -25,4 +25,6 @@ export default {
     allMonthly: "✓ Todo lo que hay en mensual",
     yearlypay: "✓ La suscripción se renueva anualmente.",
     monthlypay: "✓ La suscripción se renueva mensualmente.",
+    oldprice: "de ",
+    newprice: "a ",
   };

@@ -25,4 +25,6 @@ export default {
     allMonthly: "✓ Tudo que há no mensal",
     yearlypay: "✓ A assinatura é renovada anualmente.",
     monthlypay: "✓ A assinatura é renovada mensalmente.",
+    oldprice: "de ",
+    newprice: "por ",
   };

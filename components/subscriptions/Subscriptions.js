@@ -236,7 +236,7 @@ export const Subscriptions = () => {
             <View style={styles.gradientHeader}>
               <Text style={styles.subscriptionTitle}>{subscription.title}</Text>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
-              <Text style={styles.subscriptionPrice}>De </Text>
+              <Text style={styles.subscriptionPrice}>{translate("oldprice")}</Text>
               <Text style={styles.oldPrice}>
                 {(() => {
                   const priceString = subscription.localizedPrice;
@@ -254,7 +254,7 @@ export const Subscriptions = () => {
                 })()}
               </Text>
 
-              <Text style={styles.subscriptionPrice}>Por </Text>
+              <Text style={styles.subscriptionPrice}>{translate("newprice")}</Text>
               <Text style={styles.subscriptionPrice}>
                 {subscription.localizedPrice}
               </Text>
