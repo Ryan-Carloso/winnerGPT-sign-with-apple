@@ -43,6 +43,9 @@
     "plugins": [
       "expo-router",
       [
+        "expo-notifications"
+      ],
+      [
         "@sentry/react-native/expo",
         {
           "url": "https://sentry.io/",
