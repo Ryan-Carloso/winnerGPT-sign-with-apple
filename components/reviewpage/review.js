@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -88,14 +88,22 @@ const ReviewPage = ({ setShowReviewPage }) => {
   );
 
   const FeedbackPage = () => {
-
     const emailSubject = "Feedback para WinnerGPT";
     const emailUrl = `mailto:ryancarlos16@gmail.com?subject=${encodeURIComponent(emailSubject)}`;
-
-    Linking.openURL(emailUrl).catch((err) => {
-      console.error("Erro ao abrir o cliente de email:", err);
-      Alert.alert("Erro", "Não foi possível abrir o cliente de email.");
-    });
+  
+    useEffect(() => {
+      // Tenta abrir o link e fecha a página em seguida
+      Linking.openURL(emailUrl)
+        .then(() => {
+          setShowReviewPage(false); // Fecha a página após abrir o cliente de e-mail
+        })
+        .catch((err) => {
+          console.error("Erro ao abrir o cliente de email:", err);
+          Alert.alert("Erro", "Não foi possível abrir o cliente de email.");
+        });
+    }, []); // Executa uma vez ao montar o componente
+  
+    return null; // A página será fechada automaticamente
   };
 
   const ReviewPageContent = () => (
