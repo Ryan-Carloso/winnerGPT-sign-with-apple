@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  ScrollView,
-  Text,
-  View,
-  Platform,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-} from "react-native";
+import { ScrollView,Text,View,Platform,TouchableOpacity,SafeAreaView,ActivityIndicator,Alert,Dimensions, } from "react-native";
 import {
   initConnection,
   requestSubscription,
@@ -20,8 +10,8 @@ import {
 import { useRouter } from "expo-router";
 import { styles } from "./styles";
 import { useLanguage } from "../globalize/context";
-
 import trackSubsAnalytics from "../../components/Analytics/TrackSubs";
+
 
 const COLORS = {
   primary: "#1E88E5",
@@ -235,29 +225,33 @@ export const Subscriptions = () => {
           >
             <View style={styles.gradientHeader}>
               <Text style={styles.subscriptionTitle}>{subscription.title}</Text>
-              <View style={{ display: 'flex', flexDirection: 'row' }}>
-              <Text style={styles.subscriptionPrice}>{translate("oldprice")}</Text>
-              <Text style={styles.oldPrice}>
-                {(() => {
-                  const priceString = subscription.localizedPrice;
-                  const currencySymbol =
-                    priceString.match(/[^\d.,\s]/g)?.join("") || ""; // Extrai símbolo da moeda
-                  const cleanPrice = priceString
-                    .replace(/[^0-9,.\s]/g, "")
-                    .trim();
-                  const normalizedPrice = cleanPrice.replace(",", ".");
-                  const price = parseFloat(normalizedPrice);
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                <Text style={styles.subscriptionPrice}>
+                  {translate("oldprice")}
+                </Text>
+                <Text style={styles.oldPrice}>
+                  {(() => {
+                    const priceString = subscription.localizedPrice;
+                    const currencySymbol =
+                      priceString.match(/[^\d.,\s]/g)?.join("") || ""; // Extrai símbolo da moeda
+                    const cleanPrice = priceString
+                      .replace(/[^0-9,.\s]/g, "")
+                      .trim();
+                    const normalizedPrice = cleanPrice.replace(",", ".");
+                    const price = parseFloat(normalizedPrice);
 
-                  return isNaN(price)
-                    ? "Invalid Price"
-                    : `${currencySymbol}${Math.round(price * 1.4)}`; // Adiciona 30% e arredonda
-                })()}
-              </Text>
+                    return isNaN(price)
+                      ? "Invalid Price"
+                      : `${currencySymbol}${Math.round(price * 1.4)}`; // Adiciona 30% e arredonda
+                  })()}
+                </Text>
 
-              <Text style={styles.subscriptionPrice}>{translate("newprice")}</Text>
-              <Text style={styles.subscriptionPrice}>
-                {subscription.localizedPrice}
-              </Text>
+                <Text style={styles.subscriptionPrice}>
+                  {translate("newprice")}
+                </Text>
+                <Text style={styles.subscriptionPrice}>
+                  {subscription.localizedPrice}
+                </Text>
               </View>
             </View>
             <View style={styles.benefitsContainer}>

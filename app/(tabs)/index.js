@@ -5,21 +5,15 @@ import Header from '../../components/header';
 import GameItem from '../../components/GameItem';
 import { styles } from '../../styles/GlobalStyles';
 import { fetchData } from '../../utils/api';
-import Auth from '../../components/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Sentry from "@sentry/react-native";
+import * as Sentry from '@sentry/react-native';
 import trackUserAnalytics from '../../components/Analytics/TrackUser';
 import { initializeNotifications, scheduleLocalDailyNotification } from '../../components/notify/notify';
-
-
+import ReviewPage from './review'; // Alterado para ser um componente reutilizável
 
 Sentry.init({
-  dsn: "https://d95ffea76416fb81f8ba5846bf1c7a6c@o4507664027287552.ingest.de.sentry.io/4508311786946640",
-  // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
-  // We recommend adjusting this value in production.
+  dsn: 'https://d95ffea76416fb81f8ba5846bf1c7a6c@o4507664027287552.ingest.de.sentry.io/4508311786946640',
   tracesSampleRate: 1.0,
-  // profilesSampleRate is relative to tracesSampleRate.
-  // Here, we'll capture profiles for 100% of transactions.
   profilesSampleRate: 1.0,
 });
 
@@ -30,13 +24,20 @@ export default function App() {
   const [selectedTeam, setSelectedTeam] = useState('');
   const [sortOrder, setSortOrder] = useState('closest');
   const [numColumns, setNumColumns] = useState(1);
-  const [selectedLeague, setSelectedLeague] = useState('all'); // Default to "all"
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Add isLoggedIn state
-  const [clickCount, setClickCount] = useState(0);  // Estado global do contador
-
+  const [selectedLeague, setSelectedLeague] = useState('all');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
+  const [showReviewPage, setShowReviewPage] = useState(false);
 
   useEffect(() => {
-    // Check login status when the app starts
+    const timer = setTimeout(() => {
+      setShowReviewPage(true); // Exibe a página após 2 horas
+    }, 1800000); //30 minutes 
+
+    return () => clearTimeout(timer); // Limpa o timer ao desmontar
+  }, []);
+
+  useEffect(() => {
     trackUserAnalytics();
     initializeNotifications();
     scheduleLocalDailyNotification();
@@ -44,23 +45,20 @@ export default function App() {
     const checkLoginStatus = async () => {
       try {
         const loggedInStatus = await AsyncStorage.getItem('isLoggedIn');
-        setIsLoggedIn(loggedInStatus === 'true'); // Set state based on stored value
+        setIsLoggedIn(loggedInStatus === 'true');
       } catch (error) {
         console.error('Error checking login status:', error);
       }
     };
 
-    checkLoginStatus(); // Call the function to check login status
-
+    checkLoginStatus();
     fetchLeagueData(selectedLeague);
     adjustColumns();
 
-    // Subscribe to dimension changes
     const subscription = Dimensions.addEventListener('change', adjustColumns);
 
-    // Cleanup on unmount
     return () => {
-      subscription?.remove(); // Use the remove method on the subscription object
+      subscription?.remove();
     };
   }, [selectedLeague]);
 
@@ -71,7 +69,6 @@ export default function App() {
       ligaportugal: 'https://api-winner-gpt.vercel.app/ligaportugal/data',
     };
     if (league === 'all') {
-      // Fetch data from all leagues and combine them
       const allData = [];
       for (const key in urlMap) {
         const url = urlMap[key];
@@ -113,58 +110,50 @@ export default function App() {
     });
   };
 
-  const filteredData = sortData(data.filter((item) => {
-    return selectedTeam ? item.game.toLowerCase().includes(selectedTeam.toLowerCase()) : true;
-  }));
+  const filteredData = sortData(
+    data.filter((item) =>
+      selectedTeam ? item.game.toLowerCase().includes(selectedTeam.toLowerCase()) : true
+    )
+  );
 
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.safeArea}>
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      {showReviewPage ? (
+        <ReviewPage setShowReviewPage={setShowReviewPage} />
+      ) : loading ? (
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
-      </SafeAreaView>
-    );
-  }
-
-  if (error) {
-    return (
-      <SafeAreaView style={styles.safeArea}>
+      ) : error ? (
         <View style={styles.container}>
           <Text>Error fetching data: {error.message}</Text>
           <Button title="Retry" onPress={() => fetchLeagueData(selectedLeague)} />
         </View>
-      </SafeAreaView>
-    );
-  }
-
-  if (isLoggedIn) { // Use isLoggedIn state variable
-  //if (!isLoggedIn) { // Use isLoggedIn state variable to work on prod put the '!' there and thats fine
-    return (
-      <Auth setIsLoggedIn={setIsLoggedIn} /> 
-    );
-  } else {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.containerheader}>
-          <Header 
-            selectedTeam={selectedTeam}
-            setSelectedTeam={setSelectedTeam}
-            sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
-            selectedLeague={selectedLeague}
-            setSelectedLeague={setSelectedLeague} // Pass these props to Header
-          />
-        </View>
-        <ScrollView contentContainerStyle={styles.grid}>
-          {filteredData.map((item) => (
-            <GameItem key={item.id} item={item} numColumns={numColumns} 
-            clickCount={clickCount}
-            setClickCount={setClickCount}
-             />
-          ))}
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
+      ) : (
+        <>
+          <View style={styles.containerheader}>
+            <Header
+              selectedTeam={selectedTeam}
+              setSelectedTeam={setSelectedTeam}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
+              selectedLeague={selectedLeague}
+              setSelectedLeague={setSelectedLeague}
+            />
+          </View>
+          <ScrollView contentContainerStyle={styles.grid}>
+            {filteredData.map((item) => (
+              <GameItem
+                key={item.id}
+                item={item}
+                numColumns={numColumns}
+                clickCount={clickCount}
+                setClickCount={setClickCount}
+              />
+            ))}
+          </ScrollView>
+        </>
+      )}
+    </SafeAreaView>
+  );
 }

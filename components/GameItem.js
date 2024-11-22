@@ -61,7 +61,7 @@ export default function GameItem({ item, numColumns = 1 }) {
   };
   
   const handlePressTeam = async () => {
-    if (hasSubscription) { //put an ! here  if (!hasSubscription) {
+    if (!hasSubscription) { //put an ! here  if (!hasSubscription) {
 
   
       // Set the click count and mark the button as pressed
