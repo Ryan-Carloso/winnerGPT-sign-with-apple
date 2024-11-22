@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
 import trackUserAnalytics from '../../components/Analytics/TrackUser';
 import { initializeNotifications, scheduleLocalDailyNotification } from '../../components/notify/notify';
-import ReviewPage from './review'; // Alterado para ser um componente reutilizável
+import ReviewPage from '../../components/reviewpage/review'; // Alterado para ser um componente reutilizável
 
 Sentry.init({
   dsn: 'https://d95ffea76416fb81f8ba5846bf1c7a6c@o4507664027287552.ingest.de.sentry.io/4508311786946640',
