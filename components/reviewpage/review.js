@@ -9,12 +9,6 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from "react-native";
-import { createClient } from '@supabase/supabase-js';
-
-// Configuração do Supabase permanece a mesma
-const supabaseUrl = 'https://tlaihqorrptgeflxarvm.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsYWlocW9ycnB0Z2VmbHhhcnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIxMDgxMzksImV4cCI6MjAzNzY4NDEzOX0.B5fs0W2dXZPSmKmZ2yoMxVg4n6JBEpdBQh8ZRHOxoBY';
-export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const COLORS = {
   primary: '#7C3AED',
@@ -34,35 +28,6 @@ const ReviewPage = ({ setShowReviewPage }) => {
     Linking.openURL(appStoreLink).catch((err) =>
       console.error("Failed to open App Store link:", err)
     );
-  };
-
-  const handleSubmitFeedback = async () => {
-    const currentDate = new Date().toISOString();
-    try {
-      const { data, error } = await supabase
-        .from("feedback")
-        .insert([{
-          feedback: feedback,
-          created_at: currentDate,
-        }]);
-
-      if (error) {
-        console.error("Erro ao enviar feedback:", error.message);
-        Alert.alert("Erro", "Não foi possível enviar o feedback. Tente novamente.");
-      } else {
-        Alert.alert(
-          "Obrigado!",
-          "Obrigado pelo feedback! Iremos usá-lo para melhorar a experiência.",
-          [{
-            text: "OK",
-            onPress: () => setShowReviewPage(false),
-          }]
-        );
-      }
-    } catch (err) {
-      console.error("Erro inesperado:", err);
-      Alert.alert("Erro", "Ocorreu um problema ao enviar seu feedback.");
-    }
   };
 
   const AskFeedbackPage = () => (

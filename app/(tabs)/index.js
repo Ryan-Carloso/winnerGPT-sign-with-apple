@@ -27,14 +27,34 @@ export default function App() {
   const [selectedLeague, setSelectedLeague] = useState('all');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+
   const [showReviewPage, setShowReviewPage] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowReviewPage(true); // Exibe a página após 2 horas
-    }, 180); //30 minutes 
+    const checkAndShowReview = async () => {
+      try {
+        // Obtém o contador de reviews salvos
+        const reviewCount = await AsyncStorage.getItem('reviewCount');
+        const count = reviewCount ? parseInt(reviewCount) : 0;
 
-    return () => clearTimeout(timer); // Limpa o timer ao desmontar
+        // Exibe a página de review apenas se o contador for menor que 2
+        if (count < 2) {
+          const timer = setTimeout(async () => {
+            setShowReviewPage(true);
+
+            // Incrementa e salva o contador de reviews
+            await AsyncStorage.setItem('reviewCount', (count + 1).toString());
+          }, 1800000); // 30 minutos em milissegundos
+
+          // Cleanup do timer ao desmontar o componente
+          return () => clearTimeout(timer);
+        }
+      } catch (error) {
+        console.error('Erro ao verificar contagem de reviews:', error);
+      }
+    };
+
+    checkAndShowReview();
   }, []);
 
   useEffect(() => {
