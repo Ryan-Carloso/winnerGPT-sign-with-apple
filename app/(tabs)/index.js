@@ -32,7 +32,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowReviewPage(true); // Exibe a página após 2 horas
-    }, 1800000); //30 minutes 
+    }, 180); //30 minutes 
 
     return () => clearTimeout(timer); // Limpa o timer ao desmontar
   }, []);

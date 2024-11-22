@@ -1,40 +1,151 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Linking,
+  Modal,
+  TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
+import { createClient } from '@supabase/supabase-js';
+
+// Configuração do Supabase permanece a mesma
+const supabaseUrl = 'https://tlaihqorrptgeflxarvm.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsYWlocW9ycnB0Z2VmbHhhcnZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjIxMDgxMzksImV4cCI6MjAzNzY4NDEzOX0.B5fs0W2dXZPSmKmZ2yoMxVg4n6JBEpdBQh8ZRHOxoBY';
+export const supabase = createClient(supabaseUrl, supabaseKey);
+
+const COLORS = {
+  primary: '#7C3AED',
+  white: '#FFFFFF',
+  background: '#FFFFFF',
+  text: '#1F2937',
+  border: '#E5E7EB',
+  modalBackground: 'rgba(0, 0, 0, 0.5)',
+};
 
 const ReviewPage = ({ setShowReviewPage }) => {
+  const [currentStep, setCurrentStep] = useState("askFeedback");
+  const [feedback, setFeedback] = useState("");
+
   const openAppStoreReview = () => {
-    const appStoreLink =
-      "https://apps.apple.com/app/id6592649804?action=write-review";
+    const appStoreLink = "itms-apps://itunes.apple.com/app/id6592649804?action=write-review";
     Linking.openURL(appStoreLink).catch((err) =>
       console.error("Failed to open App Store link:", err)
     );
   };
 
-  return (
-    <View style={styles.overlay}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Enjoying the App?</Text>
-        <Text style={styles.subtitle}>We’d love to hear your feedback!</Text>
-        <TouchableOpacity style={styles.button} onPress={openAppStoreReview}>
-          <Text style={styles.buttonText}>Leave a Review</Text>
+  const handleSubmitFeedback = async () => {
+    const currentDate = new Date().toISOString();
+    try {
+      const { data, error } = await supabase
+        .from("feedback")
+        .insert([{
+          feedback: feedback,
+          created_at: currentDate,
+        }]);
+
+      if (error) {
+        console.error("Erro ao enviar feedback:", error.message);
+        Alert.alert("Erro", "Não foi possível enviar o feedback. Tente novamente.");
+      } else {
+        Alert.alert(
+          "Obrigado!",
+          "Obrigado pelo feedback! Iremos usá-lo para melhorar a experiência.",
+          [{
+            text: "OK",
+            onPress: () => setShowReviewPage(false),
+          }]
+        );
+      }
+    } catch (err) {
+      console.error("Erro inesperado:", err);
+      Alert.alert("Erro", "Ocorreu um problema ao enviar seu feedback.");
+    }
+  };
+
+  const AskFeedbackPage = () => (
+    <View style={styles.content}>
+      <Text style={styles.title}>What do you think of WinnerGPT so far?</Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.optionButton}
+          onPress={() => setCurrentStep("review")}
+        >
+          <Text style={styles.emoji}>😍</Text>
+          <Text style={styles.optionText}>I love it</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => {
-            console.log("Fechando a review page...");
-            setShowReviewPage(false);
-          }}
+          style={styles.optionButton}
+          onPress={() => setCurrentStep("feedback")}
         >
-          <Text style={styles.closeButtonText}>Close</Text>
+          <Text style={styles.emoji}>😐</Text>
+          <Text style={styles.optionText}>It could be better</Text>
         </TouchableOpacity>
       </View>
     </View>
+  );
+
+  const FeedbackPage = () => {
+
+    const emailSubject = "Feedback para WinnerGPT";
+    const emailUrl = `mailto:ryancarlos16@gmail.com?subject=${encodeURIComponent(emailSubject)}`;
+
+    Linking.openURL(emailUrl).catch((err) => {
+      console.error("Erro ao abrir o cliente de email:", err);
+      Alert.alert("Erro", "Não foi possível abrir o cliente de email.");
+    });
+  };
+
+  const ReviewPageContent = () => (
+    <View style={styles.content}>
+      <Text style={styles.title}>Enjoying the App?</Text>
+      <Text style={styles.subtitle}>We'd love to hear your feedback!</Text>
+      <TouchableOpacity 
+        style={[styles.button, styles.reviewButton]} 
+        onPress={openAppStoreReview}
+      >
+        <Text style={styles.buttonText}>Leave a Review</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, styles.closeButton]}
+        onPress={() => setShowReviewPage(false)}
+      >
+        <Text style={styles.buttonText}>Close</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <Modal
+      transparent={true}
+      animationType="fade"
+      visible={true}
+      onRequestClose={() => setShowReviewPage(false)}
+    >
+      <TouchableWithoutFeedback onPress={() => {
+        if (currentStep !== "feedback") {
+          setShowReviewPage(false);
+        }
+      }}>
+        <View style={styles.overlay}>
+          <TouchableWithoutFeedback>
+            <View style={styles.container}>
+              <TouchableOpacity
+                style={styles.closeButtonContainer}
+                onPress={() => setShowReviewPage(false)}
+              >
+                <Text style={styles.closeButtonText}>×</Text>
+              </TouchableOpacity>
+              {currentStep === "askFeedback" && <AskFeedbackPage />}
+              {currentStep === "review" && <ReviewPageContent />}
+              {currentStep === "feedback" && <FeedbackPage />}
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
   );
 };
 
@@ -43,55 +154,88 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: COLORS.modalBackground,
   },
   container: {
-    width: "90%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 20,
+    width: "85%",
+    maxWidth: 400,
+    backgroundColor: COLORS.background,
+    borderRadius: 20,
+    padding: 24,
     alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     elevation: 5,
   },
+  content: {
+    width: '100%',
+    alignItems: 'center',
+  },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 10,
+    fontSize: 20,
+    fontWeight: "600",
+    color: COLORS.text,
+    marginBottom: 24,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 16,
-    color: "#666",
-    marginBottom: 20,
+    color: COLORS.text + '80',
+    marginBottom: 24,
     textAlign: "center",
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    gap: 12,
+  },
+  optionButton: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  emoji: {
+    fontSize: 32,
+    marginBottom: 8,
+  },
+  optionText: {
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+    color: COLORS.text,
+  },
   button: {
-    backgroundColor: "#1E88E5",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginBottom: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: 12,
+    marginVertical: 8,
+    minWidth: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
   },
   buttonText: {
-    color: "#fff",
+    color: COLORS.white,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "600",
   },
-  closeButton: {
-    backgroundColor: "#f44336",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+  closeButtonContainer: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    zIndex: 1,
   },
   closeButtonText: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "bold",
+    fontSize: 24,
+    color: COLORS.text + '80',
+    lineHeight: 24,
   },
 });
 
