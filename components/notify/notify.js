@@ -36,9 +36,9 @@ export const scheduleLocalDailyNotification = async () => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'New Games just out!',
-        body: 'Hey! It’s 12 PM! Check the app for updates on new games!',
-        data: { type: 'daily_reminder' },
+        title: title,
+        body: body,
+        data: data,
       },
       trigger: {
         hour: 12, // 12 PM (local time)
@@ -71,7 +71,7 @@ export const sendNotification = async (title, body, data) => {
 
     // Agenda a notificação para 2 horas depois
     const twoHoursFromNow = new Date();
-    twoHoursFromNow.setHours(twoHoursFromNow.getTime() + 2);
+    twoHoursFromNow.setHours(twoHoursFromNow.getHours() + 2);
 
     await Notifications.scheduleNotificationAsync({
       content: {
