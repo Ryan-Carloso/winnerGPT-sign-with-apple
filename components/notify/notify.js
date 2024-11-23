@@ -55,25 +55,37 @@ export const scheduleLocalDailyNotification = async () => {
   }
 };
 
-// New function to send custom notifications
 export const sendNotification = async (title, body, data) => {
   try {
-    const twoHoursFromNow = new Date();
-    twoHoursFromNow.setHours(twoHoursFromNow.getHours() + 2); // Adiciona 2 horas ao horário atual
-
+    // Envia a notificação imediatamente
     await Notifications.scheduleNotificationAsync({
       content: {
         title: title,
         body: body,
         data: data,
       },
+      trigger: null, // Envia imediatamente
+    });
+
+    console.log('Notification sent immediately!');
+
+    // Agenda a notificação para 2 horas depois
+    const twoHoursFromNow = new Date();
+    twoHoursFromNow.setHours(twoHoursFromNow.getTime() + 2);
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: title, // Opcional: título diferenciado
+        body: body,
+        data: data,
+      },
       trigger: {
-        date: twoHoursFromNow, // Horário específico para a notificação
+        date: twoHoursFromNow,
       },
     });
 
     console.log('Notification scheduled for 2 hours from now!');
   } catch (error) {
-    console.log('Error scheduling notification:', error);
+    console.log('Error sending or scheduling notifications:', error);
   }
 };

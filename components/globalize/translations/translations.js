@@ -31,6 +31,11 @@ import AuthTransLationPt from './auth/pt'
 import AuthTransLationEs from './auth/es'
 import AuthTransLationEn from './auth/en'
 
+import NotifyTransLationFr from './notify/fr'
+import NotifyTransLationPt from './notify/pt'
+import NotifyTransLationEs from './notify/es'
+import NotifyTransLationEn from './notify/en'
+
 
 
 import globaltext from './globaltext'
@@ -43,6 +48,8 @@ const translations = {
     ...loginTransLationEn,
     ...SubsTransLationEn,
     ...AuthTransLationEn,
+    ...NotifyTransLationEn,
+
     ...globaltext.en
     
   },
@@ -53,6 +60,7 @@ const translations = {
     ...loginTransLationEs,
     ...SubsTransLationEs,
     ...AuthTransLationEs,
+    ...NotifyTransLationEs,
     ...globaltext.es
 
   },
@@ -63,6 +71,7 @@ const translations = {
     ...loginTransLationFr,
     ...SubsTransLationFr,
     ...AuthTransLationFr,
+    ...NotifyTransLationFr,
     ...globaltext.fr
 
   },
@@ -73,6 +82,7 @@ const translations = {
     ...loginTransLationPt,
     ...SubsTransLationPt,
     ...AuthTransLationPt,
+    ...NotifyTransLationPt,
     ...globaltext.pt
 
   },

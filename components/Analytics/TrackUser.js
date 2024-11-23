@@ -17,26 +17,28 @@ const trackUserAnalytics = async () => {
     if (!userId) {
       userId = Math.random().toString(36).substring(2, 15);
       await AsyncStorage.setItem('user_id', userId);
-    }
 
-    // Capturar dados do dispositivo e localidade
-    const locale = Localization.locale || 'unknown';
-    const timezone = Localization.timezone || 'unknown';
-    const lastSeen = new Date().toISOString();
+      // Capturar dados do dispositivo e localidade
+      const locale = Localization.locale || 'unknown';
+      const timezone = Localization.timezone || 'unknown';
+      const lastSeen = new Date().toISOString();
 
-    // Inserir dados no Supabase
-    const { error } = await supabase.from('user_analytics').insert([
-      {
-        user_id: userId,
-        locale: locale,
-        timezone: timezone,
-        is_new: isNew,
-        last_seen: lastSeen,
-      },
-    ]);
+      // Inserir dados no Supabase apenas se o usuário for novo
+      const { error } = await supabase.from('user_analytics').insert([
+        {
+          user_id: userId,
+          locale: locale,
+          timezone: timezone,
+          is_new: isNew,
+          last_seen: lastSeen,
+        },
+      ]);
 
-    if (error) {
-      console.error('Erro ao registrar analytics:', error);
+      if (error) {
+        console.error('Erro ao registrar analytics:', error);
+      }
+    } else {
+      console.log('Usuário já registrado. Nenhuma ação necessária.');
     }
   } catch (error) {
     console.error('Erro ao salvar analytics:', error);
