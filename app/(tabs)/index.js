@@ -44,7 +44,7 @@ export default function App() {
 
             // Incrementa e salva o contador de reviews
             await AsyncStorage.setItem('reviewCount', (count + 1).toString());
-          }, 1800000); // 30 minutos em milissegundos
+          }, 180); // 30 minutos em milissegundos
 
           // Cleanup do timer ao desmontar o componente
           return () => clearTimeout(timer);

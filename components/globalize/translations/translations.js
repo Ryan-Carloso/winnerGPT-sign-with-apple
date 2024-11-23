@@ -36,6 +36,11 @@ import NotifyTransLationPt from './notify/pt'
 import NotifyTransLationEs from './notify/es'
 import NotifyTransLationEn from './notify/en'
 
+import ReviewTransLationFr from './review/fr'
+import ReviewTransLationPt from './review/pt'
+import ReviewTransLationEs from './review/es'
+import ReviewTransLationEn from './review/en'
+
 
 
 import globaltext from './globaltext'
@@ -49,6 +54,7 @@ const translations = {
     ...SubsTransLationEn,
     ...AuthTransLationEn,
     ...NotifyTransLationEn,
+    ...ReviewTransLationEn,
 
     ...globaltext.en
     
@@ -61,6 +67,7 @@ const translations = {
     ...SubsTransLationEs,
     ...AuthTransLationEs,
     ...NotifyTransLationEs,
+    ...ReviewTransLationEs,
     ...globaltext.es
 
   },
@@ -72,6 +79,7 @@ const translations = {
     ...SubsTransLationFr,
     ...AuthTransLationFr,
     ...NotifyTransLationFr,
+    ...ReviewTransLationFr,
     ...globaltext.fr
 
   },
@@ -83,6 +91,7 @@ const translations = {
     ...SubsTransLationPt,
     ...AuthTransLationPt,
     ...NotifyTransLationPt,
+    ...ReviewTransLationPt,
     ...globaltext.pt
 
   },

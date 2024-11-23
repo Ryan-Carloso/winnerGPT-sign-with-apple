@@ -10,6 +10,8 @@ import {
   Alert,
 } from "react-native";
 
+import { useLanguage } from "../globalize/context";
+
 const COLORS = {
   primary: '#7C3AED',
   white: '#FFFFFF',
@@ -20,6 +22,7 @@ const COLORS = {
 };
 
 const ReviewPage = ({ setShowReviewPage }) => {
+  const { translate } = useLanguage();
   const [currentStep, setCurrentStep] = useState("askFeedback");
   const [feedback, setFeedback] = useState("");
 
@@ -32,28 +35,28 @@ const ReviewPage = ({ setShowReviewPage }) => {
 
   const AskFeedbackPage = () => (
     <View style={styles.content}>
-      <Text style={styles.title}>What do you think of WinnerGPT so far?</Text>
+      <Text style={styles.title}>{translate('askFeedback')}</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.optionButton}
           onPress={() => setCurrentStep("review")}
         >
           <Text style={styles.emoji}>😍</Text>
-          <Text style={styles.optionText}>I love it</Text>
+          <Text style={styles.optionText}>{translate('loveIt')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.optionButton}
           onPress={() => setCurrentStep("feedback")}
         >
           <Text style={styles.emoji}>😐</Text>
-          <Text style={styles.optionText}>It could be better</Text>
+          <Text style={styles.optionText}>{translate('couldBeBetter')}</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 
   const FeedbackPage = () => {
-    const emailSubject = "Feedback para WinnerGPT";
+    const emailSubject = "Feedback WinnerGPT";
     const emailUrl = `mailto:ryancarlos16@gmail.com?subject=${encodeURIComponent(emailSubject)}`;
   
     useEffect(() => {
@@ -64,7 +67,7 @@ const ReviewPage = ({ setShowReviewPage }) => {
         })
         .catch((err) => {
           console.error("Erro ao abrir o cliente de email:", err);
-          Alert.alert("Erro", "Não foi possível abrir o cliente de email.");
+          Alert.alert("Erro", translate('erroremail'));
         });
     }, []); // Executa uma vez ao montar o componente
   
@@ -73,19 +76,19 @@ const ReviewPage = ({ setShowReviewPage }) => {
 
   const ReviewPageContent = () => (
     <View style={styles.content}>
-      <Text style={styles.title}>Enjoying the App?</Text>
-      <Text style={styles.subtitle}>We'd love to hear your feedback!</Text>
+      <Text style={styles.title}>{translate('weLoveFeedback')}</Text>
+      <Text style={styles.subtitle}>{translate('leaveReviewText')}</Text>
       <TouchableOpacity 
         style={[styles.button, styles.reviewButton]} 
         onPress={openAppStoreReview}
       >
-        <Text style={styles.buttonText}>Leave a Review</Text>
+        <Text style={styles.buttonText}>{translate('leaveReview')}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, styles.closeButton]}
         onPress={() => setShowReviewPage(false)}
       >
-        <Text style={styles.buttonText}>Close</Text>
+        <Text style={styles.buttonText}>{translate('close')}</Text>
       </TouchableOpacity>
     </View>
   );
