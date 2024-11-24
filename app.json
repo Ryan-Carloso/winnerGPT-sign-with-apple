@@ -44,14 +44,6 @@
       "expo-router",
       [
         "expo-notifications"
-      ],
-      [
-        "@sentry/react-native/expo",
-        {
-          "url": "https://sentry.io/",
-          "project": "react-native-winnergpt",
-          "organization": "madebyryan"
-        }
       ]
     ],
     "extra": {
@@ -59,12 +51,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "5d48d9f4-c619-462a-90e7-4b485a05923f",
-        "env": {
-          "SENTRY_AUTH_TOKEN": "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",
-          "SENTRY_DISABLE_AUTO_UPLOAD": "false",
-          "SENTRY_ALLOW_FAILURE": "true"
-        }
+        "projectId": "5d48d9f4-c619-462a-90e7-4b485a05923f"
         
       }
     },

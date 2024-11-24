@@ -23,7 +23,7 @@ export const initializeNotifications = async () => {
 };
 
 // Schedule daily notification if not already scheduled
-export const scheduleLocalDailyNotification = async () => {
+export const scheduleLocalDailyNotification = async (title, body, data) => {
   const NOTIFICATION_KEY = 'dailyNotificationScheduled';
 
   try {
