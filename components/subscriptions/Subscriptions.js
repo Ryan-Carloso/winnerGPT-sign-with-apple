@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView,Text,View,Platform,TouchableOpacity,SafeAreaView,ActivityIndicator,Alert,Dimensions, } from "react-native";
+import { ScrollView,Text,View,Platform,TouchableOpacity,SafeAreaView,ActivityIndicator,Alert,Dimensions, Linking } from "react-native";
 import {
   initConnection,
   requestSubscription,
